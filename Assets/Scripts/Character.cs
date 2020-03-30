@@ -13,38 +13,48 @@ public class Character : MonoBehaviour
     public int rotating90 = 0;
     public GameObject girospot;
     public bool colliding = false;
+    private int speed = 10;
+    bool rotatingGirospot = false;
     // Start is called before the first frame update
     void Start()
     {
         rotate = 90;
         colliding = false;
         rotating = false;
+        rotatingGirospot = false;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D) && !rotating)
+        if (!rotating && !rotatingGirospot)
         {
             if (right)
-                StartCoroutine(RotateAround(Vector3.up, 90.0f, 0.5f, foice, personagem));
+                StartCoroutine(RotateAround(Vector3.up, 360, 1f, foice, personagem));
             else
             {
-                StartCoroutine(RotateAround(Vector3.up, -90.0f, 0.5f, foice, personagem));
+                StartCoroutine(RotateAround(Vector3.up, -360, 1f, foice, personagem));
             }
         }
-        if(Input.GetKey(KeyCode.Space) && colliding && girospot != null && !rotating)
+        if(Input.GetKey(KeyCode.Space) && colliding && girospot != null)
         {
+            rotatingGirospot = true;
             foicePivot.transform.position = girospot.transform.position;
             if (right)
                 transform.RotateAround(foicePivot.transform.position, Vector3.up, -360*Time.deltaTime);
             else
                 transform.RotateAround(foicePivot.transform.position,Vector3.up, 360 * Time.deltaTime);
         }
+        else
+        {
+            rotatingGirospot = false;
+        }
         if (Input.GetKeyDown(KeyCode.R))
         {
             foicePivot.transform.Rotate(0, 0, 180);
             right = !right;
         }
+        if(!rotatingGirospot)
+        Move();
     }
 
 
@@ -74,7 +84,6 @@ public class Character : MonoBehaviour
             girospot = other.gameObject;
             colliding = true;
         }
-
     }
 
     private void OnTriggerExit(Collider other)
@@ -84,6 +93,15 @@ public class Character : MonoBehaviour
             girospot = null;
             colliding = false;
         }
+    }
+    public void Move()
+    {
+
+        Vector3 Movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
+        foicePivot.transform.position += Movement * speed * Time.deltaTime;
+        
+
     }
     //private void OnTriggerEnter(Collision collision)
     //{
