@@ -6,7 +6,7 @@ public class Character : MonoBehaviour
 {
     public GameObject personagem;
     public GameObject foice;
-    public GameObject foicePivot;
+    public GameObject foicePivot, foicePivot2;
     public bool rotating = false;
     public float rotate = 90;
     public bool right = true;
@@ -15,6 +15,12 @@ public class Character : MonoBehaviour
     public bool colliding = false;
     private int speed = 10;
     bool rotatingGirospot = false;
+
+    Vector3 initialPosition;
+    Quaternion initialRotation;
+
+    Vector3 corpoInitialPosition;
+    Quaternion corpoInitialRotation;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,35 +28,60 @@ public class Character : MonoBehaviour
         colliding = false;
         rotating = false;
         rotatingGirospot = false;
+        initialPosition = foice.transform.localPosition;
+        initialRotation = foice.transform.localRotation;
+
+        corpoInitialPosition = transform.localPosition;
+        corpoInitialRotation = transform.localRotation;
     }
 
     void Update()
     {
         if (!rotating && !rotatingGirospot)
         {
-            if (right)
-                StartCoroutine(RotateAround(Vector3.up, 360, 1f, foice, personagem));
+            if (right) {
+                //StartCoroutine(RotateAround(Vector3.up, 360, 1f, foice, personagem));
+                foice.transform.RotateAround(personagem.transform.position,Vector3.up, 360 * Time.deltaTime);
+            }
             else
             {
-                StartCoroutine(RotateAround(Vector3.up, -360, 1f, foice, personagem));
+                //StartCoroutine(RotateAround(Vector3.up, -360, 1f, foice, personagem));
+                //RotateAround(Vector3.up, -360, 1f, foice, personagem);
+                foice.transform.RotateAround(personagem.transform.position, Vector3.up, -360 * Time.deltaTime);
             }
         }
-        if(Input.GetKey(KeyCode.Space) && colliding && girospot != null)
+        if (Input.GetKeyDown(KeyCode.Space) && colliding)
         {
-            rotatingGirospot = true;
-            foicePivot.transform.position = girospot.transform.position;
-            if (right)
-                transform.RotateAround(foicePivot.transform.position, Vector3.up, -360*Time.deltaTime);
+            rotatingGirospot = !rotatingGirospot;
+            if (rotatingGirospot)
+            {
+                transform.localPosition = corpoInitialPosition;
+                transform.localRotation = corpoInitialRotation;
+                foice.transform.localRotation = initialRotation;
+                foice.transform.localPosition = initialPosition;
+                
+                //transform.SetParent(girospot.transform);
+                if (right)
+                {
+                    transform.position = girospot.GetComponent<Girospot>().getP1();
+                }
+                else
+                {
+                    foice.transform.Rotate(0, 0, 180);
+                    transform.position = girospot.GetComponent<Girospot>().getP2();
+                }
+                girospot.GetComponent<Girospot>().PlayerConectado(right, gameObject);
+            }
             else
-                transform.RotateAround(foicePivot.transform.position,Vector3.up, 360 * Time.deltaTime);
-        }
-        else
-        {
-            rotatingGirospot = false;
+            {
+                //transform.SetParent(null);
+                girospot.GetComponent<Girospot>().PlayerSolto();
+            }
+            
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            foicePivot.transform.Rotate(0, 0, 180);
+            foice.transform.Rotate(0, 0, 180);
             right = !right;
         }
         if(!rotatingGirospot)
@@ -99,7 +130,7 @@ public class Character : MonoBehaviour
 
         Vector3 Movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-        foicePivot.transform.position += Movement * speed * Time.deltaTime;
+        transform.position += Movement * speed * Time.deltaTime;
         
 
     }
