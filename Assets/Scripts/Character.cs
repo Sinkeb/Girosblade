@@ -21,6 +21,14 @@ public class Character : MonoBehaviour
 
     Vector3 corpoInitialPosition;
     Quaternion corpoInitialRotation;
+
+    public Vector3 direction = new Vector3(0,0,0);
+    Vector3 esquerda = new Vector3(-1, 0, 0);
+    Vector3 direita = new Vector3(1, 0, 0);
+    Vector3 cima = new Vector3(0, 0, 1);
+    Vector3 baixo = new Vector3(0, 0, -1);
+
+    bool paredeCol = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,10 +41,30 @@ public class Character : MonoBehaviour
 
         corpoInitialPosition = transform.localPosition;
         corpoInitialRotation = transform.localRotation;
+        
     }
 
     void Update()
     {
+        //gameObject.GetComponent<CapsuleCollider>().tr
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            direction = esquerda;
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            direction = direita;
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            direction = cima;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            direction = baixo;
+        }
+
         if (!rotating && !rotatingGirospot)
         {
             if (right) {
@@ -76,6 +104,7 @@ public class Character : MonoBehaviour
             {
                 //transform.SetParent(null);
                 girospot.GetComponent<Girospot>().PlayerSolto();
+                direction = gameObject.transform.localRotation * -Vector3.forward;
             }
             
         }
@@ -106,14 +135,37 @@ public class Character : MonoBehaviour
         p_me.transform.RotateAround(p_object.transform.position, axis, angle - rotated);
         rotating = false;
     }
+    public void Move()
+    {
 
+        //Vector3 Movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
+        transform.position += direction * speed * Time.deltaTime;
+
+
+    }
+    public void ColisaoParede(Vector3 dir)
+    {
+        direction = new Vector3(direction.x * dir.x, 0, direction.z * dir.z);
+        foice.transform.Rotate(0, 0, 180);
+        right = !right;
+        paredeCol = true;
+    }
+    public void SaiuParede()
+    {
+        paredeCol = false;
+    }
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.name);
+        
         if (other.gameObject.tag == "Girospot")
         {
             girospot = other.gameObject;
             colliding = true;
+        }
+        if(other.gameObject.tag == "Parede" && !paredeCol)
+        {
         }
     }
 
@@ -124,27 +176,21 @@ public class Character : MonoBehaviour
             girospot = null;
             colliding = false;
         }
+        if (other.gameObject.tag == "Parede")
+        {
+        }
     }
-    public void Move()
-    {
+        //private void OnTriggerEnter(Collision collision)
+        //{
+        //}
 
-        Vector3 Movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
-        transform.position += Movement * speed * Time.deltaTime;
-        
-
+        //private void OnCollisionExit(Collision collision)
+        //{
+        //    if (collision.gameObject.tag == "Girospot")
+        //    {
+        //        girospot = null;
+        //        colliding = false;
+        //    }
+        //}
     }
-    //private void OnTriggerEnter(Collision collision)
-    //{
-    //}
-
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    if (collision.gameObject.tag == "Girospot")
-    //    {
-    //        girospot = null;
-    //        colliding = false;
-    //    }
-    //}
-}
 
