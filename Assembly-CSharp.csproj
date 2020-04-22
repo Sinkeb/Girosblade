@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\CharCollider.cs" />
+    <Compile Include="Assets\Scripts\FoiceCollider.cs" />
     <Compile Include="Assets\Scripts\Girospot.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/Marlon/Documents/Projetos Unity/Girosblade/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
