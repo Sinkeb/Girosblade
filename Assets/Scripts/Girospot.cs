@@ -12,6 +12,9 @@ public class Girospot : MonoBehaviour
     bool right;
     Quaternion initialRotation;
 
+    public bool inativo = false;
+    float inativoTimer = 0f;
+
     void Start()
     {
         playerConectado = false;
@@ -36,6 +39,19 @@ public class Girospot : MonoBehaviour
             }
 
         }
+        if (inativo)
+        {
+            GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<CapsuleCollider>().enabled = false;
+            inativoTimer += Time.deltaTime;
+            if(inativoTimer >= 5f)
+            {
+                GetComponent<MeshRenderer>().enabled = true;
+                GetComponent<CapsuleCollider>().enabled = true;
+                inativo = false;
+                inativoTimer = 0f;
+            }
+        }
     }
 
     public Vector3 getP1() {
@@ -57,5 +73,6 @@ public class Girospot : MonoBehaviour
         transform.localRotation = initialRotation;
         playerConectado = false;
         player = null;
+        inativo = true;
     }
 }

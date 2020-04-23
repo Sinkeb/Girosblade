@@ -21,6 +21,11 @@ public class Character : MonoBehaviour
     public bool ghost = false;
     float ghostTimer = 0;
 
+    public bool repelimento = false;
+    float repelimentoTimer = 0;
+
+    int vidas = 3;
+
     Vector3 initialPosition;
     Quaternion initialRotation;
 
@@ -68,6 +73,16 @@ public class Character : MonoBehaviour
                 GiroGhostOff();
             }
         }
+        if (repelimento)
+        {
+            repelimentoTimer += Time.deltaTime;
+            if(repelimentoTimer >= 0.8f)
+            {
+                Debug.Log("Acabou Repelimento");
+                repelimentoTimer = 0f;
+                repelimento = false;
+            }
+        }
         //gameObject.GetComponent<CapsuleCollider>().tr
         if (!dummy)
         {
@@ -105,33 +120,35 @@ public class Character : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space) && colliding && !dummy)
         {
-            rotatingGirospot = !rotatingGirospot;
-            if (rotatingGirospot)
+            if (!girospot.GetComponent<Girospot>().inativo)
             {
-                transform.localPosition = corpoInitialPosition;
-                transform.localRotation = corpoInitialRotation;
-                foice.transform.localRotation = initialRotation;
-                foice.transform.localPosition = initialPosition;
-                
-                //transform.SetParent(girospot.transform);
-                if (right)
+                rotatingGirospot = !rotatingGirospot;
+                if (rotatingGirospot)
                 {
-                    transform.position = girospot.GetComponent<Girospot>().getP1();
+                    transform.localPosition = corpoInitialPosition;
+                    transform.localRotation = corpoInitialRotation;
+                    foice.transform.localRotation = initialRotation;
+                    foice.transform.localPosition = initialPosition;
+
+                    //transform.SetParent(girospot.transform);
+                    if (right)
+                    {
+                        transform.position = girospot.GetComponent<Girospot>().getP1();
+                    }
+                    else
+                    {
+                        foice.transform.Rotate(0, 0, 180);
+                        transform.position = girospot.GetComponent<Girospot>().getP2();
+                    }
+                    girospot.GetComponent<Girospot>().PlayerConectado(right, gameObject);
                 }
                 else
                 {
-                    foice.transform.Rotate(0, 0, 180);
-                    transform.position = girospot.GetComponent<Girospot>().getP2();
+                    //transform.SetParent(null);
+                    girospot.GetComponent<Girospot>().PlayerSolto();
+                    direction = gameObject.transform.localRotation * -Vector3.forward;
                 }
-                girospot.GetComponent<Girospot>().PlayerConectado(right, gameObject);
             }
-            else
-            {
-                //transform.SetParent(null);
-                girospot.GetComponent<Girospot>().PlayerSolto();
-                direction = gameObject.transform.localRotation * -Vector3.forward;
-            }
-            
         }
         if (Input.GetKeyDown(KeyCode.R) && !dummy)
         {
@@ -173,6 +190,11 @@ public class Character : MonoBehaviour
         matt.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.25f);
         GetComponent<MeshRenderer>().material = matt;
         ghost = true;
+        vidas--;
+        if(vidas <= 0)
+        {
+            morreu();
+        }
     }
     public void GiroGhostOff()
     {
@@ -180,6 +202,10 @@ public class Character : MonoBehaviour
         GetComponent<MeshRenderer>().material = mat;
         ghost = false;
         GetComponent<CapsuleCollider>().enabled = true;
+    }
+    void morreu()
+    {
+        Destroy(gameObject);
     }
     public void InverterDirecao()
     {
@@ -205,21 +231,30 @@ public class Character : MonoBehaviour
         if (other.gameObject.tag == "Girospot")
         {
             girospot = other.gameObject;
-            colliding = true;
+            if (!girospot.GetComponent<Girospot>().inativo)
+            {
+                colliding = true;
+            }
+            else
+            {
+                girospot = null;
+                colliding = false;
+            }
         }
-        /*if (other.gameObject.tag == "Player" && !dummy && !ghost)
+        if (other.gameObject.tag == "Player" && !dummy && !ghost && !repelimento)
         {
             Debug.Log("Player no player");
+            repelimento = true;
             //impulsionar ao contrario
             InverterDirecao();
         }
-        if (other.gameObject.tag == "Foice" && dummy && !ghost)
+        if (other.gameObject.tag == "Foice" && dummy && !ghost && !repelimento)
         {
             Debug.Log("Player colidiu na foice");
             //impulsionar ao contrario
-            //InverterDirecao();
+            InverterDirecao();
             GiroGhostOn();
-        }*/
+        }
 
     }
     private void OnTriggerExit(Collider other)
