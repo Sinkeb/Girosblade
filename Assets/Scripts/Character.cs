@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Character : MonoBehaviour
 {
@@ -13,10 +14,12 @@ public class Character : MonoBehaviour
     public int rotating90 = 0;
     public GameObject girospot;
     public bool colliding = false;
+    public bool onGirospot = false;
     private int speed = 10;
     bool rotatingGirospot = false;
     public Material mat, matGhost;
     Material matt;
+    public Material m2;
     public bool dummy = false;
     public bool ghost = false;
     float ghostTimer = 0;
@@ -41,6 +44,10 @@ public class Character : MonoBehaviour
     bool paredeCol = false;
 
     Material[] materiais;
+
+    public Image[] spriteVidas;
+
+    public int nPlayer = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,7 +63,12 @@ public class Character : MonoBehaviour
 
         matt = Instantiate(GetComponent<MeshRenderer>().material);
         mat = GetComponent<MeshRenderer>().material;
-        
+
+        if(nPlayer == 2)
+        {
+            GetComponent<MeshRenderer>().material = m2;
+        }
+
     }
 
     void Update()
@@ -84,7 +96,7 @@ public class Character : MonoBehaviour
             }
         }
         //gameObject.GetComponent<CapsuleCollider>().tr
-        if (!dummy)
+        if (!dummy && nPlayer == 1)
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
@@ -103,7 +115,28 @@ public class Character : MonoBehaviour
                 direction = baixo;
             }
         }
-        
+        if (!dummy && nPlayer == 2)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                direction = esquerda;
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                direction = direita;
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                direction = cima;
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                direction = baixo;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.F)){
+            GiroGhostOn();
+        }
 
         if (!rotating && !rotatingGirospot && !dummy)
         {
@@ -118,38 +151,21 @@ public class Character : MonoBehaviour
                 foice.transform.RotateAround(personagem.transform.position, Vector3.up, -360 * Time.deltaTime);
             }
         }
-        if (Input.GetKeyDown(KeyCode.Space) && colliding && !dummy)
+        if(nPlayer == 1)
         {
-            if (!girospot.GetComponent<Girospot>().inativo)
+            if (Input.GetKeyDown(KeyCode.Space) && colliding && !dummy)
             {
-                rotatingGirospot = !rotatingGirospot;
-                if (rotatingGirospot)
-                {
-                    transform.localPosition = corpoInitialPosition;
-                    transform.localRotation = corpoInitialRotation;
-                    foice.transform.localRotation = initialRotation;
-                    foice.transform.localPosition = initialPosition;
-
-                    //transform.SetParent(girospot.transform);
-                    if (right)
-                    {
-                        transform.position = girospot.GetComponent<Girospot>().getP1();
-                    }
-                    else
-                    {
-                        foice.transform.Rotate(0, 0, 180);
-                        transform.position = girospot.GetComponent<Girospot>().getP2();
-                    }
-                    girospot.GetComponent<Girospot>().PlayerConectado(right, gameObject);
-                }
-                else
-                {
-                    //transform.SetParent(null);
-                    girospot.GetComponent<Girospot>().PlayerSolto();
-                    direction = gameObject.transform.localRotation * -Vector3.forward;
-                }
+                ActionKeyGirospot();
             }
         }
+        else if(nPlayer == 2)
+        {
+            if (Input.GetKeyDown(KeyCode.B) && colliding && !dummy)
+            {
+                ActionKeyGirospot();
+            }
+        }
+       
         if (Input.GetKeyDown(KeyCode.R) && !dummy)
         {
             foice.transform.Rotate(0, 0, 180);
@@ -191,7 +207,8 @@ public class Character : MonoBehaviour
         GetComponent<MeshRenderer>().material = matt;
         ghost = true;
         vidas--;
-        if(vidas <= 0)
+        spriteVidas[vidas].GetComponent<Image>().enabled = false;
+        if (vidas <= 0)
         {
             morreu();
         }
@@ -224,6 +241,44 @@ public class Character : MonoBehaviour
     {
         paredeCol = false;
     }
+
+    void ActionKeyGirospot()
+    {
+        if (!girospot.GetComponent<Girospot>().inativo)
+        {
+            rotatingGirospot = !rotatingGirospot;
+            if (rotatingGirospot)
+            {
+                transform.localPosition = corpoInitialPosition;
+                transform.localRotation = corpoInitialRotation;
+                foice.transform.localRotation = initialRotation;
+                foice.transform.localPosition = initialPosition;
+
+                //transform.SetParent(girospot.transform);
+                if (right)
+                {
+                    transform.position = girospot.GetComponent<Girospot>().getP1();
+                }
+                else
+                {
+                    foice.transform.Rotate(0, 0, 180);
+                    transform.position = girospot.GetComponent<Girospot>().getP2();
+                }
+                onGirospot = true;
+                GetComponent<CapsuleCollider>().enabled = false;
+                girospot.GetComponent<Girospot>().PlayerConectado(right, gameObject);
+            }
+            else
+            {
+                //transform.SetParent(null);
+                GetComponent<CapsuleCollider>().enabled = true;
+                girospot.GetComponent<Girospot>().PlayerSolto();
+                direction = gameObject.transform.localRotation * -Vector3.forward;
+                onGirospot = false;
+            }
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log(other.gameObject.name);
@@ -248,12 +303,19 @@ public class Character : MonoBehaviour
             //impulsionar ao contrario
             InverterDirecao();
         }
-        if (other.gameObject.tag == "Foice" && dummy && !ghost && !repelimento)
+        if (other.gameObject.tag == "Foice" && !ghost && !repelimento)
         {
             Debug.Log("Player colidiu na foice");
             //impulsionar ao contrario
             InverterDirecao();
             GiroGhostOn();
+            
+        }
+
+        if (other.gameObject.tag == "Shield")
+        {
+            InverterDirecao();
+
         }
 
     }

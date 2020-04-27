@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Girospot : MonoBehaviour
 {
@@ -14,6 +15,12 @@ public class Girospot : MonoBehaviour
 
     public bool inativo = false;
     float inativoTimer = 0f;
+
+    public GameObject shield;
+    public GameObject sShield;
+
+    public Image loading;
+    float maxTime = 5f;
 
     void Start()
     {
@@ -44,12 +51,14 @@ public class Girospot : MonoBehaviour
             GetComponent<MeshRenderer>().enabled = false;
             GetComponent<CapsuleCollider>().enabled = false;
             inativoTimer += Time.deltaTime;
-            if(inativoTimer >= 5f)
+            loading.GetComponent<Image>().fillAmount = inativoTimer / maxTime;
+            if(inativoTimer >= maxTime)
             {
                 GetComponent<MeshRenderer>().enabled = true;
                 GetComponent<CapsuleCollider>().enabled = true;
                 inativo = false;
                 inativoTimer = 0f;
+                loading.GetComponent<Image>().enabled = false;
             }
         }
     }
@@ -67,6 +76,8 @@ public class Girospot : MonoBehaviour
         playerConectado = true;
         right = r;
         player = p;
+        shield.GetComponent<CapsuleCollider>().enabled = true;
+        sShield.GetComponent<SpriteRenderer>().enabled = true;
     }
     public void PlayerSolto()
     {
@@ -74,5 +85,8 @@ public class Girospot : MonoBehaviour
         playerConectado = false;
         player = null;
         inativo = true;
+        loading.GetComponent<Image>().enabled = true;
+        shield.GetComponent<CapsuleCollider>().enabled = false;
+        sShield.GetComponent<SpriteRenderer>().enabled = false;
     }
 }

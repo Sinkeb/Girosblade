@@ -51,6 +51,10 @@ public class FoiceCollider : MonoBehaviour
                 pers.InverterDirecao();
             }
         }
+        if (other.gameObject.tag == "Shield")
+        {
+            pers.InverterDirecao();
+        }
     }
     private void OnTriggerExit(Collider other)
     {

@@ -8,6 +8,7 @@ TagManager:
   - Parede
   - Paredex
   - Foice
+  - Shield
   layers:
   - Default
   - TransparentFX
