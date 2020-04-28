@@ -12,14 +12,19 @@ public class Character : MonoBehaviour
     public float rotate = 90;
     public bool right = true;
     public int rotating90 = 0;
+
     public GameObject girospot;
     public bool colliding = false;
     public bool onGirospot = false;
+    float giroTime = 0f;
+    float giroTimeMax = 6f;
+
     private int speed = 10;
     bool rotatingGirospot = false;
     public Material mat, matGhost;
     Material matt;
     public Material m2;
+    public GameObject cabo, foiceee;
     public bool dummy = false;
     public bool ghost = false;
     float ghostTimer = 0;
@@ -48,9 +53,11 @@ public class Character : MonoBehaviour
     public Image[] spriteVidas;
 
     public int nPlayer = 1;
+    GameManager manager;
     // Start is called before the first frame update
     void Start()
     {
+        manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         rotate = 90;
         colliding = false;
         rotating = false;
@@ -61,18 +68,38 @@ public class Character : MonoBehaviour
         corpoInitialPosition = transform.localPosition;
         corpoInitialRotation = transform.localRotation;
 
-        matt = Instantiate(GetComponent<MeshRenderer>().material);
-        mat = GetComponent<MeshRenderer>().material;
-
-        if(nPlayer == 2)
+        //matt = Instantiate(GetComponent<MeshRenderer>().material);
+        
+        if (nPlayer == 2)
         {
             GetComponent<MeshRenderer>().material = m2;
+            foiceee.GetComponent<MeshRenderer>().material = m2;
+            cabo.GetComponent<MeshRenderer>().material = m2;
+            //GetComponentInChildren<MeshRenderer>().material = mat;
+            mat = m2;
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().material = mat;
+            foiceee.GetComponent<MeshRenderer>().material = mat;
+            cabo.GetComponent<MeshRenderer>().material = mat;
         }
 
     }
 
     void Update()
     {
+        if (!manager.comecou)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) && nPlayer ==1)
+            {
+                manager.PlayerReady(nPlayer, gameObject);
+            }
+            else if (Input.GetKeyDown(KeyCode.B) && nPlayer == 2)
+            {
+                manager.PlayerReady(nPlayer, gameObject);
+            }
+        }
         if (ghost)
         {
             GetComponent<CapsuleCollider>().enabled = false;
@@ -95,8 +122,19 @@ public class Character : MonoBehaviour
                 repelimento = false;
             }
         }
+
+        if (onGirospot)
+        {
+            giroTime += Time.deltaTime;
+            if(giroTime >= giroTimeMax)
+            {
+                giroTime = 0f;
+                SairGirospot();
+            }
+        }
+       
         //gameObject.GetComponent<CapsuleCollider>().tr
-        if (!dummy && nPlayer == 1)
+        if (!dummy && nPlayer == 1 && manager.jogando)
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
@@ -114,8 +152,17 @@ public class Character : MonoBehaviour
             {
                 direction = baixo;
             }
+            if (Input.GetKeyDown(KeyCode.R) && !dummy)
+            {
+                foice.transform.Rotate(0, 0, 180);
+                right = !right;
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && colliding && !dummy)
+            {
+                ActionKeyGirospot();
+            }
         }
-        if (!dummy && nPlayer == 2)
+        if (!dummy && nPlayer == 2 && manager.jogando)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -133,10 +180,19 @@ public class Character : MonoBehaviour
             {
                 direction = baixo;
             }
+            if (Input.GetKeyDown(KeyCode.Q) && !dummy)
+            {
+                foice.transform.Rotate(0, 0, 180);
+                right = !right;
+            }
+            if (Input.GetKeyDown(KeyCode.B) && colliding && !dummy)
+            {
+                ActionKeyGirospot();
+            }
         }
-        if (Input.GetKeyDown(KeyCode.F)){
+        /*if (Input.GetKeyDown(KeyCode.F)){
             GiroGhostOn();
-        }
+        }*/
 
         if (!rotating && !rotatingGirospot && !dummy)
         {
@@ -151,27 +207,10 @@ public class Character : MonoBehaviour
                 foice.transform.RotateAround(personagem.transform.position, Vector3.up, -360 * Time.deltaTime);
             }
         }
-        if(nPlayer == 1)
-        {
-            if (Input.GetKeyDown(KeyCode.Space) && colliding && !dummy)
-            {
-                ActionKeyGirospot();
-            }
-        }
-        else if(nPlayer == 2)
-        {
-            if (Input.GetKeyDown(KeyCode.B) && colliding && !dummy)
-            {
-                ActionKeyGirospot();
-            }
-        }
+        
        
-        if (Input.GetKeyDown(KeyCode.R) && !dummy)
-        {
-            foice.transform.Rotate(0, 0, 180);
-            right = !right;
-        }
-        if(!rotatingGirospot)
+        
+        if(!rotatingGirospot && manager.jogando)
         Move();
     }
 
@@ -203,8 +242,12 @@ public class Character : MonoBehaviour
 
     }
     public void GiroGhostOn() {
-        matt.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.25f);
-        GetComponent<MeshRenderer>().material = matt;
+        //matt.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.25f);
+        GetComponent<MeshRenderer>().material = matGhost;
+        foiceee.GetComponent<MeshRenderer>().material = matGhost;
+        cabo.GetComponent<MeshRenderer>().material = matGhost;
+        //GetComponentInChildren<MeshRenderer>().material = matGhost;
+
         ghost = true;
         vidas--;
         spriteVidas[vidas].GetComponent<Image>().enabled = false;
@@ -217,11 +260,16 @@ public class Character : MonoBehaviour
     {
         //mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 1);
         GetComponent<MeshRenderer>().material = mat;
+        foiceee.GetComponent<MeshRenderer>().material = mat;
+        cabo.GetComponent<MeshRenderer>().material = mat;
+        //GetComponentInChildren<MeshRenderer>().material = mat;
+
         ghost = false;
         GetComponent<CapsuleCollider>().enabled = true;
     }
     void morreu()
     {
+        manager.Perdi(nPlayer);
         Destroy(gameObject);
     }
     public void InverterDirecao()
@@ -249,34 +297,48 @@ public class Character : MonoBehaviour
             rotatingGirospot = !rotatingGirospot;
             if (rotatingGirospot)
             {
-                transform.localPosition = corpoInitialPosition;
-                transform.localRotation = corpoInitialRotation;
-                foice.transform.localRotation = initialRotation;
-                foice.transform.localPosition = initialPosition;
-
-                //transform.SetParent(girospot.transform);
-                if (right)
-                {
-                    transform.position = girospot.GetComponent<Girospot>().getP1();
-                }
-                else
-                {
-                    foice.transform.Rotate(0, 0, 180);
-                    transform.position = girospot.GetComponent<Girospot>().getP2();
-                }
-                onGirospot = true;
-                GetComponent<CapsuleCollider>().enabled = false;
-                girospot.GetComponent<Girospot>().PlayerConectado(right, gameObject);
+                EntrarGirospot(girospot);
             }
             else
             {
                 //transform.SetParent(null);
-                GetComponent<CapsuleCollider>().enabled = true;
-                girospot.GetComponent<Girospot>().PlayerSolto();
-                direction = gameObject.transform.localRotation * -Vector3.forward;
-                onGirospot = false;
+                giroTime = 0f;
+                SairGirospot();
             }
         }
+    }
+    public void EntrarGirospot(GameObject giros)
+    {
+        girospot = giros;
+        rotatingGirospot = true;
+        transform.localPosition = corpoInitialPosition;
+        transform.localRotation = corpoInitialRotation;
+        foice.transform.localRotation = initialRotation;
+        foice.transform.localPosition = initialPosition;
+
+        //transform.SetParent(girospot.transform);
+        if (right)
+        {
+            transform.position = girospot.GetComponent<Girospot>().getP1();
+        }
+        else
+        {
+            foice.transform.Rotate(0, 0, 180);
+            transform.position = girospot.GetComponent<Girospot>().getP2();
+        }
+        onGirospot = true;
+        GetComponent<CapsuleCollider>().enabled = false;
+        foiceee.GetComponent<FoiceCollider>().DesativarCollider();
+        girospot.GetComponent<Girospot>().PlayerConectado(right, gameObject);
+    }
+    void SairGirospot()
+    {
+        rotatingGirospot = false;
+        GetComponent<CapsuleCollider>().enabled = true;
+        foiceee.GetComponent<FoiceCollider>().AtivarCollider();
+        girospot.GetComponent<Girospot>().PlayerSolto();
+        direction = gameObject.transform.localRotation * -Vector3.forward;
+        onGirospot = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -305,15 +367,19 @@ public class Character : MonoBehaviour
         }
         if (other.gameObject.tag == "Foice" && !ghost && !repelimento)
         {
-            Debug.Log("Player colidiu na foice");
-            //impulsionar ao contrario
-            InverterDirecao();
-            GiroGhostOn();
-            
+            Character ot = other.gameObject.GetComponentInParent<Character>();
+            if (!ot.ghost)
+            {
+                Debug.Log("Player colidiu na foice");
+                //impulsionar ao contrario
+                InverterDirecao();
+                GiroGhostOn();
+            }
         }
 
-        if (other.gameObject.tag == "Shield")
+        if (other.gameObject.tag == "Shield" && !repelimento)
         {
+            repelimento = true;
             InverterDirecao();
 
         }

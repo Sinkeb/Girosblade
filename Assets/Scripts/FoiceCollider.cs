@@ -16,6 +16,16 @@ public class FoiceCollider : MonoBehaviour
     {
         
     }
+
+    public void DesativarCollider()
+    {
+        GetComponent<BoxCollider>().enabled = false;
+    }
+    public void AtivarCollider()
+    {
+        GetComponent<BoxCollider>().enabled = true;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Girospot")
@@ -43,7 +53,7 @@ public class FoiceCollider : MonoBehaviour
         }
         if (other.gameObject.tag == "Player" && !pers.repelimento)
         {
-            Character ot = other.gameObject.GetComponent<Character>();
+            Character ot = other.gameObject.GetComponentInParent<Character>();
             if (!ot.ghost && !pers.ghost)
             {
                 Debug.Log("foice no Player");
@@ -51,8 +61,9 @@ public class FoiceCollider : MonoBehaviour
                 pers.InverterDirecao();
             }
         }
-        if (other.gameObject.tag == "Shield")
+        if (other.gameObject.tag == "Shield" && !pers.repelimento)
         {
+            pers.repelimento = true;
             pers.InverterDirecao();
         }
     }

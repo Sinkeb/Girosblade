@@ -58,6 +58,8 @@ MonoBehaviour:
   mat: {fileID: 0}
   matGhost: {fileID: 0}
   m2: {fileID: 0}
+  cabo: {fileID: 0}
+  foiceee: {fileID: 0}
   dummy: 0
   ghost: 0
   repelimento: 0
@@ -427,8 +429,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6589021623830625628}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.145, y: 0, z: -0.478}
-  m_LocalScale: {x: 1.5740156, y: 0.2, z: 0.44074807}
+  m_LocalPosition: {x: 0.145, y: 0, z: -0.116}
+  m_LocalScale: {x: 2.0141103, y: 0.2, z: 0.44074807}
   m_Children: []
   m_Father: {fileID: 6589021624425770553}
   m_RootOrder: 1
@@ -768,6 +770,8 @@ MonoBehaviour:
   mat: {fileID: 2100000, guid: 727645669984559459058cbc4728de94, type: 2}
   matGhost: {fileID: 2100000, guid: b220f027a1bafbb4cb06ac632fa014fe, type: 2}
   m2: {fileID: 2100000, guid: 30c13b4aa05a637419db41b52f99a33a, type: 2}
+  cabo: {fileID: 6589021624754112393}
+  foiceee: {fileID: 6589021623830625628}
   dummy: 0
   ghost: 0
   repelimento: 0
@@ -877,8 +881,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6589021624754112393}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.094, y: 0, z: -0.961}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.6138763}
+  m_LocalPosition: {x: 0.094, y: 0, z: -0.715}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1.028918}
   m_Children: []
   m_Father: {fileID: 6589021624425770553}
   m_RootOrder: 0
@@ -1000,6 +1004,8 @@ MonoBehaviour:
   mat: {fileID: 0}
   matGhost: {fileID: 0}
   m2: {fileID: 0}
+  cabo: {fileID: 0}
+  foiceee: {fileID: 0}
   dummy: 0
   ghost: 0
   repelimento: 0
