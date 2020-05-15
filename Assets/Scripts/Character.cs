@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 public class Character : MonoBehaviour
 {
@@ -54,7 +55,15 @@ public class Character : MonoBehaviour
 
     public int nPlayer = 1;
     GameManager manager;
-    // Start is called before the first frame update
+
+
+
+    //REDE
+    /*int hostId;
+    private int reliableChannel;
+    private int unreliableChannel;
+    private int connectionId;*/
+
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -95,10 +104,10 @@ public class Character : MonoBehaviour
             {
                 manager.PlayerReady(nPlayer, gameObject);
             }
-            else if (Input.GetKeyDown(KeyCode.B) && nPlayer == 2)
+            /*else if (Input.GetKeyDown(KeyCode.B) && nPlayer == 2)
             {
                 manager.PlayerReady(nPlayer, gameObject);
-            }
+            }*/
         }
         if (ghost)
         {
@@ -123,10 +132,19 @@ public class Character : MonoBehaviour
             }
         }
 
-        if (onGirospot)
+        if (onGirospot && nPlayer == 1)
         {
             giroTime += Time.deltaTime;
             if(giroTime >= giroTimeMax)
+            {
+                giroTime = 0f;
+                SairGirospot();
+            }
+        }
+        else if(onGirospot && manager.rede && nPlayer == 1)
+        {
+            giroTime += Time.deltaTime;
+            if (giroTime >= giroTimeMax)
             {
                 giroTime = 0f;
                 SairGirospot();
@@ -162,7 +180,7 @@ public class Character : MonoBehaviour
                 ActionKeyGirospot();
             }
         }
-        if (!dummy && nPlayer == 2 && manager.jogando)
+        /*if (!dummy && nPlayer == 2 && manager.jogando)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -189,7 +207,7 @@ public class Character : MonoBehaviour
             {
                 ActionKeyGirospot();
             }
-        }
+        }*/
         /*if (Input.GetKeyDown(KeyCode.F)){
             GiroGhostOn();
         }*/
@@ -214,7 +232,7 @@ public class Character : MonoBehaviour
         Move();
     }
 
-
+    
 
     IEnumerator RotateAround(Vector3 axis, float angle, float duration, GameObject p_me, GameObject p_object)
     {
@@ -274,16 +292,24 @@ public class Character : MonoBehaviour
     }
     public void InverterDirecao()
     {
+        repelimento = true;
         direction = -direction;
         foice.transform.Rotate(0, 0, 180);
         right = !right;
     }
     public void ColisaoParede(Vector3 dir)
     {
-        direction = new Vector3(direction.x * dir.x, 0, direction.z * dir.z);
-        foice.transform.Rotate(0, 0, 180);
-        right = !right;
-        paredeCol = true;
+        if(nPlayer == 1)
+        {
+            direction = new Vector3(direction.x * dir.x, 0, direction.z * dir.z);
+            foice.transform.Rotate(0, 0, 180);
+            right = !right;
+            paredeCol = true;
+            manager.EnviarDirecao(nPlayer, direction);
+        }
+        //colidiu com a parede - mandar pro SERVER
+        //nPlayer, vec3 direcao,
+        
     }
     public void SaiuParede()
     {
@@ -365,6 +391,7 @@ public class Character : MonoBehaviour
             //impulsionar ao contrario
             InverterDirecao();
         }
+        /*
         if (other.gameObject.tag == "Foice" && !ghost && !repelimento)
         {
             Character ot = other.gameObject.GetComponentInParent<Character>();
@@ -375,7 +402,7 @@ public class Character : MonoBehaviour
                 InverterDirecao();
                 GiroGhostOn();
             }
-        }
+        }*/
 
         if (other.gameObject.tag == "Shield" && !repelimento)
         {
@@ -406,5 +433,16 @@ public class Character : MonoBehaviour
         //        colliding = false;
         //    }
         //}
+
+    void ConnectTo()
+    {
+        /*NetworkTransport.Init();
+        ConnectionConfig cc = new ConnectionConfig();
+
+        reliableChannel = cc.AddChannel(QosType.Reliable);
+        unreliableChannel = cc.AddChannel(QosType.Unreliable);
+
+        HostTopology topo = new HostTopology(cc, 1);*/
+    }
     }
 

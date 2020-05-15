@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Arena1.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Areana1Rede.unity
+    guid: 04b7180070ba10441bccca2b7c2f9788
+  - enabled: 0
+    path: Assets/Scenes/Server.unity
+    guid: bacbda74ae0473b468f2cea708aee779
   m_configObjects: {}

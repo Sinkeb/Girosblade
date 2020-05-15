@@ -30,6 +30,85 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
   sceneClasses:
+    Assets/Scenes/Areana1Rede.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 54
+      Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
+    - Class: 65
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 9682}
+    - Class: 114
+      Script: {instanceID: 9870}
+    - Class: 114
+      Script: {instanceID: 10160}
+    - Class: 114
+      Script: {instanceID: 10238}
+    - Class: 114
+      Script: {instanceID: 10322}
+    - Class: 114
+      Script: {instanceID: 10574}
+    - Class: 114
+      Script: {instanceID: 10782}
+    - Class: 114
+      Script: {instanceID: 10888}
+    - Class: 114
+      Script: {instanceID: 10958}
+    - Class: 114
+      Script: {instanceID: 11016}
+    - Class: 114
+      Script: {instanceID: 11146}
+    - Class: 114
+      Script: {instanceID: 11264}
+    - Class: 114
+      Script: {instanceID: 11362}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 136
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 212
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
+    - Class: 258
+      Script: {instanceID: 0}
     Assets/Scenes/Arena1.unity:
     - Class: 1
       Script: {instanceID: 0}
@@ -72,23 +151,23 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10238}
     - Class: 114
-      Script: {instanceID: 10572}
+      Script: {instanceID: 10322}
     - Class: 114
-      Script: {instanceID: 10780}
+      Script: {instanceID: 10574}
     - Class: 114
-      Script: {instanceID: 10884}
+      Script: {instanceID: 10782}
     - Class: 114
-      Script: {instanceID: 10954}
+      Script: {instanceID: 10888}
     - Class: 114
-      Script: {instanceID: 11012}
+      Script: {instanceID: 10958}
     - Class: 114
-      Script: {instanceID: 11142}
+      Script: {instanceID: 11016}
     - Class: 114
-      Script: {instanceID: 11258}
+      Script: {instanceID: 11146}
     - Class: 114
-      Script: {instanceID: 11356}
+      Script: {instanceID: 11264}
     - Class: 114
-      Script: {instanceID: 27724}
+      Script: {instanceID: 11362}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -141,21 +220,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10258}
     - Class: 114
-      Script: {instanceID: 10572}
+      Script: {instanceID: 10574}
     - Class: 114
-      Script: {instanceID: 10780}
+      Script: {instanceID: 10782}
     - Class: 114
-      Script: {instanceID: 10794}
+      Script: {instanceID: 10796}
     - Class: 114
-      Script: {instanceID: 10954}
+      Script: {instanceID: 10860}
     - Class: 114
-      Script: {instanceID: 11012}
+      Script: {instanceID: 10958}
     - Class: 114
-      Script: {instanceID: 11160}
+      Script: {instanceID: 11016}
     - Class: 114
-      Script: {instanceID: 11356}
+      Script: {instanceID: 11164}
     - Class: 114
-      Script: {instanceID: 46050}
+      Script: {instanceID: 11362}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -365,6 +444,12 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
+      Hash: 2475c15803ffe07956a361d2bfc77002
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameManager
+  - hash:
+      serializedVersion: 2
       Hash: b3ab2106268377ffe25dd18ac23dca28
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -467,6 +552,12 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MainMenu
+  - hash:
+      serializedVersion: 2
       Hash: e9530ad16b678f659c54cf17117e940c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -513,6 +604,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_StyleSheet
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Server
   - hash:
       serializedVersion: 2
       Hash: 840420b5a2deea9d3877cab033c2f7ea
@@ -609,20 +706,9 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 1bb93f5aaf37d479eb1c5c5c2ee72e6d
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: GameManager
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: MainMenu
   platform: 5
   scenePathNames:
   - Assets/Scenes/MainMenu.unity
   - Assets/Scenes/Arena1.unity
+  - Assets/Scenes/Areana1Rede.unity
   playerPath: C:/Users/Marlon/Desktop/Multijogador/Build Girosblade/Girosblade.exe

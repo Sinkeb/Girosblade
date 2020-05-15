@@ -17,20 +17,26 @@ public class CharCollider : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Paredex")
+        if(pers.nPlayer == 1)
         {
-            pers.ColisaoParede(new Vector3(-1,1,1));
-        }
-        if (other.gameObject.tag == "Parede")
-        {
-            pers.ColisaoParede(new Vector3(1, 1, -1));
+            if (other.gameObject.tag == "Paredex")
+            {
+                pers.ColisaoParede(new Vector3(-1, 1, 1));
+            }
+            if (other.gameObject.tag == "Parede")
+            {
+                pers.ColisaoParede(new Vector3(1, 1, -1));
+            }
         }
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Parede" || other.gameObject.tag == "Paredex")
+        if (pers.nPlayer == 1)
         {
-            pers.SaiuParede();
+            if (other.gameObject.tag == "Parede" || other.gameObject.tag == "Paredex")
+            {
+                pers.SaiuParede();
+            }
         }
     }
 }

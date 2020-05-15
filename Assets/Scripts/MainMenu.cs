@@ -21,6 +21,10 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
+    public void RedeButton()
+    {
+        SceneManager.LoadScene(2);
+    }
     public void QuitButton()
     {
         Application.Quit();
