@@ -345,6 +345,7 @@ MonoBehaviour:
   player1: {fileID: 6589021623933399186}
   player2: {fileID: 322120381}
   comecou: 0
+  preparados: 0
   jogando: 0
   tempo: {fileID: 1995902207}
   endPanel: {fileID: 484733980}
@@ -352,6 +353,8 @@ MonoBehaviour:
   startPanel: {fileID: 616934120}
   check1: {fileID: 333881109}
   check2: {fileID: 853132430}
+  p1text: {fileID: 1381990241}
+  p2text: {fileID: 418996876}
 --- !u!4 &322184829
 Transform:
   m_ObjectHideFlags: 0
@@ -2268,7 +2271,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: Player 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2337,10 +2340,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1446399028}
-    characterCount: 1
+    characterCount: 8
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 1
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
     lineCount: 1
     pageCount: 1

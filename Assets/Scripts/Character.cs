@@ -98,7 +98,7 @@ public class Character : MonoBehaviour
 
     void Update()
     {
-        if (!manager.comecou)
+        if (!manager.comecou && manager.preparados)
         {
             if (Input.GetKeyDown(KeyCode.Space) && nPlayer ==1)
             {
@@ -228,8 +228,10 @@ public class Character : MonoBehaviour
         
        
         
-        if(!rotatingGirospot && manager.jogando)
-        Move();
+        if(!rotatingGirospot && manager.jogando && nPlayer == 1)
+        {
+            Move();
+        }
     }
 
     
@@ -256,8 +258,13 @@ public class Character : MonoBehaviour
         //Vector3 Movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
         transform.position += direction * speed * Time.deltaTime;
+        manager.EnviarPosicao(transform.position.x, transform.position.y, transform.position.z);
 
 
+    }
+    public bool GetRedeStat()
+    {
+        return manager.rede;
     }
     public void GiroGhostOn() {
         //matt.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.25f);
@@ -305,11 +312,30 @@ public class Character : MonoBehaviour
             foice.transform.Rotate(0, 0, 180);
             right = !right;
             paredeCol = true;
-            manager.EnviarDirecao(nPlayer, direction);
+            if (manager.rede)
+            {
+                //manager.EnviarDirecao(nPlayer, direction);
+            }
         }
+        
         //colidiu com a parede - mandar pro SERVER
         //nPlayer, vec3 direcao,
         
+    }
+    public void SetPosition(float x, float y, float z)
+    {
+        transform.position = new Vector3(x, y, z);
+    }
+    public void ChangeDirection(Vector3 vecs)
+    {
+        //Vector3 teste = new Vector3(direction.x * vecs.x, 0, direction.z * vecs.z);
+        if (vecs != direction)
+        {
+            direction = vecs;
+            foice.transform.Rotate(0, 0, 180);
+            right = !right;
+            //paredeCol = true;
+        }
     }
     public void SaiuParede()
     {
@@ -356,8 +382,10 @@ public class Character : MonoBehaviour
         GetComponent<CapsuleCollider>().enabled = false;
         foiceee.GetComponent<FoiceCollider>().DesativarCollider();
         girospot.GetComponent<Girospot>().PlayerConectado(right, gameObject);
+        //mensagem Egiro = entrar girospot;
+        manager.EntreiGirospot(girospot);
     }
-    void SairGirospot()
+    public void SairGirospot()
     {
         rotatingGirospot = false;
         GetComponent<CapsuleCollider>().enabled = true;
@@ -365,8 +393,18 @@ public class Character : MonoBehaviour
         girospot.GetComponent<Girospot>().PlayerSolto();
         direction = gameObject.transform.localRotation * -Vector3.forward;
         onGirospot = false;
+        //mensagem Sgiro = sair girospot
+        manager.SaiGirospot(girospot, direction);
     }
-
+    public void GirospotExit(Vector3 dir)
+    {
+        rotatingGirospot = false;
+        GetComponent<CapsuleCollider>().enabled = true;
+        foiceee.GetComponent<FoiceCollider>().AtivarCollider();
+        girospot.GetComponent<Girospot>().PlayerSolto();
+        direction = dir;
+        onGirospot = false;
+    }
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log(other.gameObject.name);

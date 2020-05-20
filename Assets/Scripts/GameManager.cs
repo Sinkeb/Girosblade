@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject player1, player2;
 
     public bool comecou = false;
+    public bool preparados = false;
     public bool jogando = false;
     bool player1Ready = false;
     bool player2Ready = false;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject startPanel;
     public Image check1, check2;
+    public TextMeshProUGUI p1text, p2text;
 
     //REDE
     private const int max_c = 2;
@@ -47,6 +49,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Application.targetFrameRate = 60;
         if (rede)
         {
             NetworkTransport.Init();
@@ -54,6 +57,9 @@ public class GameManager : MonoBehaviour
 
             reliableChannel = cc.AddChannel(QosType.Reliable);
             unreliableChannel = cc.AddChannel(QosType.Unreliable);
+            cc.SendDelay = 0;
+            cc.MinUpdateTimeout = 1;
+            //int teste = cc.AddChannel(QosType.)
             HostTopology topo = new HostTopology(cc, max_c);
             //hostId = NetworkTransport.AddHost(topology, 8888);
             hostId = NetworkTransport.AddHost(topo, 0);
@@ -64,6 +70,8 @@ public class GameManager : MonoBehaviour
             string ip = LocalIPAddress();
             Debug.Log(ip);
             connectionId = NetworkTransport.Connect(hostId, ip, porta, 0, out error);
+            //NetworkTransport.packet
+            
             //Debug.Log(connectionId + " ID");
             conectou = true;
         }
@@ -72,8 +80,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (conectou)
         {
+            NetworkEventType recData;
+            do
+            {
             int recHostId;
             int connectionId;
             int channelId;
@@ -81,7 +93,7 @@ public class GameManager : MonoBehaviour
             int bufferSize = 1024;
             int dataSize;
             byte error;
-            NetworkEventType recData = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
+            recData = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
             switch (recData)
             {
                 case NetworkEventType.Nothing:
@@ -101,28 +113,45 @@ public class GameManager : MonoBehaviour
                     string[] sepEnvio = msg.Split('|');
                     switch (sepEnvio[0])
                     {
+                        case "Preparados":
+                            preparados = true;
+                            p1text.color = Color.green;
+                            p2text.color = Color.green;
+                            break;
                         case "Conectou":
                             meuID = int.Parse(sepEnvio[1]);
-                            numP.text = meuID.ToString();
+                            numP.text ="Player " + meuID.ToString();
                             if (meuID == 1)
                             {
                                 player1.GetComponent<Character>().nPlayer = 1;
                                 player2.GetComponent<Character>().nPlayer = 2;
+                                p1text.text = "Eu";
+                                p1text.color = Color.green;
+                                p2text.text = "Inimigo";
                             }
                             else
                             {
+                                p1text.text = "Inimigo";
+                                p2text.text = "Eu";
+                                p2text.color = Color.green;
                                 player1.GetComponent<Character>().nPlayer = 2;
                                 player2.GetComponent<Character>().nPlayer = 1;
                             }
                             break;
-                        case "Direcao":
+                        /*case "Direcao":
                             float x, y, z;
                             x = float.Parse(sepEnvio[2]);
                             y = float.Parse(sepEnvio[3]);
                             z = float.Parse(sepEnvio[4]);
                             Vector3 dir = new Vector3(x, y, z);
-                            player2.GetComponent<Character>().ColisaoParede(dir);
-                            break;
+                            if(int.Parse(sepEnvio[1]) == 1){
+                                player1.GetComponent<Character>().ChangeDirection(dir);
+                            }
+                            else
+                            {
+                                player2.GetComponent<Character>().ChangeDirection(dir);
+                            }
+                            break;*/
                         case "Pronto":
                             if(int.Parse(sepEnvio[1]) != meuID)
                             {
@@ -130,14 +159,66 @@ public class GameManager : MonoBehaviour
                                 {
                                     player2Ready = true;
                                     check2.enabled = true;
+                                    p2text.color = Color.green;
                                 }
                                 else
                                 {
+                                    p1text.color = Color.green;
                                     player1Ready = true;
                                     check1.enabled = true;
                                 }
                             }
                             break;
+                        case "Comecar":
+                            ComecarPartida();
+                            break;
+                        case "Posicao":
+                            float xp, yp, zp;
+                            xp = float.Parse(sepEnvio[2]);
+                            yp = float.Parse(sepEnvio[3]);
+                            zp = float.Parse(sepEnvio[4]);
+                            if (int.Parse(sepEnvio[1]) == 1)
+                            {
+                                //player1
+                                player1.GetComponent<Character>().SetPosition(xp, yp, zp);
+                            }
+                            else
+                            {
+                                //player2
+                                player2.GetComponent<Character>().SetPosition(xp, yp, zp);
+                            }
+                            break;
+                        /*case "Egiro":
+                            if(int.Parse(sepEnvio[1]) == 1)
+                            {
+                                //player1 entrou girospot
+                                player1.GetComponent<Character>().EntrarGirospot(girospots[int.Parse(sepEnvio[2])]);
+
+                            }
+                            else
+                            {
+                                //player2 entrou girospot
+                                player2.GetComponent<Character>().EntrarGirospot(girospots[int.Parse(sepEnvio[2])]);
+                            }
+                            break;
+                        case "Sgiro":
+                            float xx, yy, zz;
+                            xx = float.Parse(sepEnvio[2]);
+                            yy = float.Parse(sepEnvio[3]);
+                            zz = float.Parse(sepEnvio[4]);
+                            Vector3 newDir = new Vector3(xx, yy, zz);
+                            if (int.Parse(sepEnvio[1]) == 1)
+                            {
+                                //player1 saiu girospot
+                                player1.GetComponent<Character>().GirospotExit(newDir);
+                            }
+                            else
+                            {
+                                //player2 saiu girospot
+                                player2.GetComponent<Character>().GirospotExit(newDir);
+
+                            }
+                            break;*/
                        
                     }
 
@@ -151,15 +232,17 @@ public class GameManager : MonoBehaviour
                     //Debug.Log("BroadcastEvent");
                     break;
             }
+            } while (recData != NetworkEventType.Nothing);
+            
         }
 
-        if(player1Ready && player2Ready && !jogando)
+        if(player1Ready && player2Ready && !jogando && !rede)
         {
             comecou = true;
             startPanel.SetActive(false);
             Debug.Log("todos prontos");
         }
-        if (comecou)
+        if (comecou && !rede)
         {
             jogando = true;
             player1.GetComponent<Character>().EntrarGirospot(girospots[0]);
@@ -260,7 +343,60 @@ public class GameManager : MonoBehaviour
     }
     public void EnviarDirecao(int id, Vector3 direc)
     {
-        string m = "Direcao|" + connectionId + "|" + direc.x + "|" + direc.y + "|" + direc.z;
+        string m = "Direcao|" + meuID + "|" + direc.x + "|" + direc.y + "|" + direc.z;
         Enviar(m, reliableChannel);
+    }
+    public void EntreiGirospot(GameObject giro)
+    {
+        int idgiro = getIndiceGirospot(giro);
+        if (idgiro != -1)
+        {
+            Debug.Log(idgiro + " idGirospot entrei");
+            string msg = "Egiro|" + meuID + "|" + idgiro;
+            Enviar(msg, reliableChannel);
+        }
+    }
+    public void SaiGirospot(GameObject giro, Vector3 dir)
+    {
+        string msg = "Sgiro|" + meuID + "|" + dir.x + "|" + dir.y + "|" + dir.z;
+        Enviar(msg, reliableChannel);
+    }
+    int getIndiceGirospot(GameObject giro)
+    {
+        for (int i = 0; i < girospots.Length; i++)
+        {
+            if (giro == girospots[i])
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    void ComecarPartida()
+    {
+        comecou = true;
+        startPanel.SetActive(false);
+        Debug.Log("todos prontos");
+        jogando = true;
+        
+        if(meuID ==1) {
+            //player1.GetComponent<Character>().EntrarGirospot(girospots[0]);
+            player1.GetComponent<Character>().ChangeDirection(new Vector3(0, 0, 0));
+            //player2.GetComponent<Character>().ChangeDirection(new Vector3(-1, 0, 1));
+        }
+        else
+        {
+            //player1.GetComponent<Character>().ChangeDirection(new Vector3(1, 0, 1));
+            player2.GetComponent<Character>().ChangeDirection(new Vector3(1, 0, 1));
+            //player2.GetComponent<Character>().EntrarGirospot(girospots[girospots.Length - 1]);
+        }
+
+        comecou = false;
+        Debug.Log("comecou");
+    }
+    public void EnviarPosicao(float x, float y, float z)
+    {
+        string msg = "Posicao|" + meuID + "|" + x + "|" + y + "|" + z;
+        Enviar(msg, unreliableChannel);
     }
 }

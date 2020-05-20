@@ -17,7 +17,18 @@ public class CharCollider : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if(pers.nPlayer == 1)
+        if(pers.nPlayer == 1 && pers.GetRedeStat())
+        {
+            if (other.gameObject.tag == "Paredex")
+            {
+                pers.ColisaoParede(new Vector3(-1, 1, 1));
+            }
+            if (other.gameObject.tag == "Parede")
+            {
+                pers.ColisaoParede(new Vector3(1, 1, -1));
+            }
+        }
+        else if(!pers.GetRedeStat())
         {
             if (other.gameObject.tag == "Paredex")
             {
@@ -31,7 +42,13 @@ public class CharCollider : MonoBehaviour
     }
     void OnTriggerExit(Collider other)
     {
-        if (pers.nPlayer == 1)
+        if (pers.nPlayer == 1 && pers.GetRedeStat())
+        {
+            if (other.gameObject.tag == "Parede" || other.gameObject.tag == "Paredex")
+            {
+                pers.SaiuParede();
+            }
+        }else if (!pers.GetRedeStat())
         {
             if (other.gameObject.tag == "Parede" || other.gameObject.tag == "Paredex")
             {
