@@ -177,48 +177,45 @@ public class GameManager : MonoBehaviour
                             xp = float.Parse(sepEnvio[2]);
                             yp = float.Parse(sepEnvio[3]);
                             zp = float.Parse(sepEnvio[4]);
+                            JsonSerial pFoice = JsonUtility.FromJson<JsonSerial>(sepEnvio[5]);
                             if (int.Parse(sepEnvio[1]) == 1)
                             {
                                 //player1
                                 player1.GetComponent<Character>().SetPosition(xp, yp, zp);
+                                player1.GetComponent<Character>().SetFoiceT(pFoice.pp, pFoice.rr);
                             }
                             else
                             {
                                 //player2
                                 player2.GetComponent<Character>().SetPosition(xp, yp, zp);
+                                player2.GetComponent<Character>().SetFoiceT(pFoice.pp, pFoice.rr);
                             }
-                            break;
-                        /*case "Egiro":
+                                break;
+                        case "Egiro":
                             if(int.Parse(sepEnvio[1]) == 1)
                             {
                                 //player1 entrou girospot
-                                player1.GetComponent<Character>().EntrarGirospot(girospots[int.Parse(sepEnvio[2])]);
+                                player1.GetComponent<Character>().GirospotEnter(girospots[int.Parse(sepEnvio[2])], bool.Parse(sepEnvio[3]));
 
                             }
                             else
                             {
                                 //player2 entrou girospot
-                                player2.GetComponent<Character>().EntrarGirospot(girospots[int.Parse(sepEnvio[2])]);
+                                player2.GetComponent<Character>().GirospotEnter(girospots[int.Parse(sepEnvio[2])], bool.Parse(sepEnvio[3]));
                             }
                             break;
                         case "Sgiro":
-                            float xx, yy, zz;
-                            xx = float.Parse(sepEnvio[2]);
-                            yy = float.Parse(sepEnvio[3]);
-                            zz = float.Parse(sepEnvio[4]);
-                            Vector3 newDir = new Vector3(xx, yy, zz);
                             if (int.Parse(sepEnvio[1]) == 1)
                             {
                                 //player1 saiu girospot
-                                player1.GetComponent<Character>().GirospotExit(newDir);
+                                player1.GetComponent<Character>().GirospotExit();
                             }
                             else
                             {
                                 //player2 saiu girospot
-                                player2.GetComponent<Character>().GirospotExit(newDir);
-
+                                player2.GetComponent<Character>().GirospotExit();
                             }
-                            break;*/
+                            break;
                        
                     }
 
@@ -321,7 +318,7 @@ public class GameManager : MonoBehaviour
     }
     private void Enviar(string mensagem, int channelID)
     {
-        Debug.Log("Enviando: " + mensagem);
+        //Debug.Log("Enviando: " + mensagem);
         //System.Text.encodi
         byte[] msg = Encoding.Unicode.GetBytes(mensagem);
         NetworkTransport.Send(hostId, connectionId, channelID, msg, mensagem.Length * sizeof(char), out error);
@@ -346,19 +343,19 @@ public class GameManager : MonoBehaviour
         string m = "Direcao|" + meuID + "|" + direc.x + "|" + direc.y + "|" + direc.z;
         Enviar(m, reliableChannel);
     }
-    public void EntreiGirospot(GameObject giro)
+    public void EntreiGirospot(GameObject giro, bool or)
     {
         int idgiro = getIndiceGirospot(giro);
         if (idgiro != -1)
         {
             Debug.Log(idgiro + " idGirospot entrei");
-            string msg = "Egiro|" + meuID + "|" + idgiro;
+            string msg = "Egiro|" + meuID + "|" + idgiro + "|" + or;
             Enviar(msg, reliableChannel);
         }
     }
-    public void SaiGirospot(GameObject giro, Vector3 dir)
+    public void SaiGirospot(GameObject giro)
     {
-        string msg = "Sgiro|" + meuID + "|" + dir.x + "|" + dir.y + "|" + dir.z;
+        string msg = "Sgiro|" + meuID;
         Enviar(msg, reliableChannel);
     }
     int getIndiceGirospot(GameObject giro)
@@ -381,7 +378,7 @@ public class GameManager : MonoBehaviour
         
         if(meuID ==1) {
             //player1.GetComponent<Character>().EntrarGirospot(girospots[0]);
-            player1.GetComponent<Character>().ChangeDirection(new Vector3(0, 0, 0));
+            player1.GetComponent<Character>().ChangeDirection(new Vector3(-1, 0, 1));
             //player2.GetComponent<Character>().ChangeDirection(new Vector3(-1, 0, 1));
         }
         else
@@ -394,9 +391,13 @@ public class GameManager : MonoBehaviour
         comecou = false;
         Debug.Log("comecou");
     }
-    public void EnviarPosicao(float x, float y, float z)
+    public void EnviarPosicao(float x, float y, float z, Vector3 foiceP, Quaternion foiceR)
     {
-        string msg = "Posicao|" + meuID + "|" + x + "|" + y + "|" + z;
+        JsonSerial js = new JsonSerial();
+        js.pp = foiceP;
+        js.rr = foiceR;
+        string dataAsJson = JsonUtility.ToJson(js);
+        string msg = "Posicao|" + meuID + "|" + x + "|" + y + "|" + z + "|"+ dataAsJson;
         Enviar(msg, unreliableChannel);
     }
 }

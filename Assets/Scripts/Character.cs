@@ -258,9 +258,15 @@ public class Character : MonoBehaviour
         //Vector3 Movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
         transform.position += direction * speed * Time.deltaTime;
-        manager.EnviarPosicao(transform.position.x, transform.position.y, transform.position.z);
+        manager.EnviarPosicao(transform.position.x, transform.position.y, transform.position.z, foice.transform.localPosition, foice.transform.localRotation);
+        //enviar rotate da foice tambem;
 
-
+    }
+    public void SetFoiceT(Vector3 foiceP, Quaternion foiceR)
+    {
+        //foice.transform = foiceT;
+        foice.transform.localPosition = foiceP;
+        foice.transform.localRotation = foiceR;
     }
     public bool GetRedeStat()
     {
@@ -383,7 +389,31 @@ public class Character : MonoBehaviour
         foiceee.GetComponent<FoiceCollider>().DesativarCollider();
         girospot.GetComponent<Girospot>().PlayerConectado(right, gameObject);
         //mensagem Egiro = entrar girospot;
-        manager.EntreiGirospot(girospot);
+        manager.EntreiGirospot(girospot, right);
+    }
+    public void GirospotEnter(GameObject gi, bool or)
+    {
+        right = or;
+        girospot = gi;
+        rotatingGirospot = true;
+        transform.localPosition = corpoInitialPosition;
+        transform.localRotation = corpoInitialRotation;
+        foice.transform.localRotation = initialRotation;
+        foice.transform.localPosition = initialPosition;
+        //transform.SetParent(girospot.transform);
+        if (right)
+        {
+            transform.position = girospot.GetComponent<Girospot>().getP1();
+        }
+        else
+        {
+            foice.transform.Rotate(0, 0, 180);
+            transform.position = girospot.GetComponent<Girospot>().getP2();
+        }
+        onGirospot = true;
+        GetComponent<CapsuleCollider>().enabled = false;
+        foiceee.GetComponent<FoiceCollider>().DesativarCollider();
+        girospot.GetComponent<Girospot>().PlayerConectado(right, gameObject);
     }
     public void SairGirospot()
     {
@@ -394,16 +424,17 @@ public class Character : MonoBehaviour
         direction = gameObject.transform.localRotation * -Vector3.forward;
         onGirospot = false;
         //mensagem Sgiro = sair girospot
-        manager.SaiGirospot(girospot, direction);
+        manager.SaiGirospot(girospot);
+        girospot = null;
     }
-    public void GirospotExit(Vector3 dir)
+    public void GirospotExit()
     {
         rotatingGirospot = false;
         GetComponent<CapsuleCollider>().enabled = true;
         foiceee.GetComponent<FoiceCollider>().AtivarCollider();
         girospot.GetComponent<Girospot>().PlayerSolto();
-        direction = dir;
         onGirospot = false;
+        girospot = null;
     }
     private void OnTriggerEnter(Collider other)
     {

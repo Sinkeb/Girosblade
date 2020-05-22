@@ -118,10 +118,10 @@ public class Server : MonoBehaviour
                             {
                                 Enviar(msg, 1, unreliableChannel);
                             }
-                            /*else
+                            else
                             {
                                 Enviar(msg, 2, unreliableChannel);
-                            }*/
+                            }
                             break;
                         case "Egiro":
                             if (connectionId == 1)
