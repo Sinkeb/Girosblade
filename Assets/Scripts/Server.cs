@@ -25,7 +25,7 @@ public class Server : MonoBehaviour
 
     void Start()
     {
-        NetworkTransport.Init();
+        /*NetworkTransport.Init();
         ConnectionConfig cc = new ConnectionConfig();
 
         reliableChannel = cc.AddChannel(QosType.Reliable);
@@ -36,25 +36,42 @@ public class Server : MonoBehaviour
 
         hostId = NetworkTransport.AddHost(topo, porta);
 
-        comecou = true;
+        comecou = true;*/
 
-        tIP.text = LocalIPAddress();
+        //tIP.text = LocalIPAddress();
+    }
+    public void StartServer()
+    {
+        NetworkTransport.Init();
+        ConnectionConfig cc = new ConnectionConfig();
+
+        reliableChannel = cc.AddChannel(QosType.Reliable);
+        unreliableChannel = cc.AddChannel(QosType.Unreliable);
+        cc.SendDelay = 0;
+        cc.MinUpdateTimeout = 1;
+        HostTopology topo = new HostTopology(cc, max_c);
+
+        hostId = NetworkTransport.AddHost(topo, porta);
+        Debug.Log("Socket aberto com ID: " + hostId);
+
+        comecou = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(p1Ready && p2Ready)
+        if (!comecou)
+        {
+            return;
+        }
+        if (p1Ready && p2Ready)
         {
             Enviar("Comecar|",1,reliableChannel);
             Enviar("Comecar|",2,reliableChannel);
             p1Ready = false;
             p2Ready = false;
         }
-        if (!comecou)
-        {
-            return;
-        }
+        
         NetworkEventType recData;
         do
         {
@@ -165,6 +182,7 @@ public class Server : MonoBehaviour
     }
     private void Onconnection(int id)
     {
+        Debug.Log("OnConnectionServer");
         Enviar("Conectou|" + id, id, reliableChannel);
     }
     public string LocalIPAddress()

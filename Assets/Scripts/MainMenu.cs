@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject mainPage, multiPage;
     void Start()
     {
         
@@ -28,5 +28,25 @@ public class MainMenu : MonoBehaviour
     public void QuitButton()
     {
         Application.Quit();
+    }
+    public void MultiPage()
+    {
+        mainPage.SetActive(false);
+        multiPage.SetActive(true);
+    }
+    public void MainPage()
+    {
+        multiPage.SetActive(false);
+        mainPage.SetActive(true);
+    }
+    public void CriarJogo()
+    {
+        GlobalClass.nn = 1;
+        SceneManager.LoadScene(2);
+    }
+    public void EntrarJogo()
+    {
+        GlobalClass.nn = 0;
+        SceneManager.LoadScene(2);
     }
 }

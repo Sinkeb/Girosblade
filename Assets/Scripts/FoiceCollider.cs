@@ -51,7 +51,7 @@ public class FoiceCollider : MonoBehaviour
                 pers.InverterDirecao();
             }
         }
-        if (other.gameObject.tag == "Player" && !pers.repelimento)
+        /*if (other.gameObject.tag == "Player" && !pers.repelimento)
         {
             Character ot = other.gameObject.GetComponentInParent<Character>();
             if (!ot.ghost && !pers.ghost)
@@ -60,7 +60,7 @@ public class FoiceCollider : MonoBehaviour
                 pers.repelimento = true;
                 pers.InverterDirecao();
             }
-        }
+        }*/
         if (other.gameObject.tag == "Shield" && !pers.repelimento)
         {
             pers.repelimento = true;

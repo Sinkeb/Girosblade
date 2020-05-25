@@ -42,14 +42,24 @@ public class GameManager : MonoBehaviour
     private int reliableChannel;
     private int unreliableChannel;
     private int connectionId;
-    private int meuID;
+    public int meuID;
     private bool conectou = false;
     //private bool comecou = false;
     private byte error;
 
+    int broadcastKey = 1000;
+    int broadcastVersion = 1;
+    int broadcastSubVersion = 1;
+    string broadcastData = "HELLO";
+
     void Start()
     {
         Application.targetFrameRate = 60;
+        /*if(GlobalClass.nn == 1)
+        {
+            ser.GetComponent<Server>().enabled = true;
+            ser.GetComponent<Server>().StartServer();
+        }*/
         if (rede)
         {
             NetworkTransport.Init();
@@ -61,18 +71,49 @@ public class GameManager : MonoBehaviour
             cc.MinUpdateTimeout = 1;
             //int teste = cc.AddChannel(QosType.)
             HostTopology topo = new HostTopology(cc, max_c);
-            //hostId = NetworkTransport.AddHost(topology, 8888);
-            hostId = NetworkTransport.AddHost(topo, 0);
+            //NetworkTransport.host
+            //if(GlobalClass.nn == 1)
+            //{
+                //criar host/server
+            hostId = NetworkTransport.AddHost(topo, 8888);
+            if(hostId != -1)
+            {
+                Debug.Log("Socket aberto com ID: " + hostId);
+                meuID = 2;
+                p1text.text = "Inimigo";
+                p2text.text = "Eu";
+                p2text.color = Color.green;
+                player1.GetComponent<Character>().nPlayer = 2;
+                player2.GetComponent<Character>().nPlayer = 1;
+                //player2.GetComponent<Character>().setMaterial(2);
+                //player1.GetComponent<Character>().setMaterial(1);
+                numP.text = "Player " + meuID.ToString();
+                //Enviar("Teste|", reliableChannel);
+                //byte[] bmsg = GetBytes(broadcastData);
+                //NetworkTransport.StartBroadcastDiscovery(hostId, porta, broadcastKey, broadcastVersion, broadcastSubVersion, bmsg, bmsg.Length, 1000, out error);
+                
+            }
+            else
+            {
+                GlobalClass.nn = 0;
+                hostId = NetworkTransport.AddHost(topo, 0);
+                //Debug.Log(hostId + "idHost");
+                string ip = LocalIPAddress();
+                Debug.Log(ip);
+                connectionId = NetworkTransport.Connect(hostId, ip, porta, 0, out error);
+                //NetworkTransport.SetBroadcastCredentials(hostId)
+
+                Debug.Log(connectionId + " ID");
+            }
             //Debug.Log(hostId+ " hostID");
             //192.168.0.104
             //192.168.0.2
             //connectionId = NetworkTransport.Connect(hostId, ip, porta, 0, out error);
-            string ip = LocalIPAddress();
-            Debug.Log(ip);
-            connectionId = NetworkTransport.Connect(hostId, ip, porta, 0, out error);
+
+
+            //NetworkTransport.connect
             //NetworkTransport.packet
-            
-            //Debug.Log(connectionId + " ID");
+
             conectou = true;
         }
     }
@@ -96,79 +137,80 @@ public class GameManager : MonoBehaviour
             recData = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
             switch (recData)
             {
-                case NetworkEventType.Nothing:
-                    //Debug.Log("Nothing");
-                    break;
                 case NetworkEventType.ConnectEvent:
-                    Debug.Log("Conectado");
-                    //meuID = connectionId;
-                    numP.text = meuID.ToString();
-                    
-                    //string msgE = "Conectou|" + connectionId;
-                    //Enviar(msgE, reliableChannel);
-                    break;
-                case NetworkEventType.DataEvent:
-                    //Debug.Log("DataEvent");
+                        if(meuID == 2)
+                        {
+                            EnviarPlayer("Conectou|" + connectionId, connectionId, reliableChannel);
+                            Debug.Log("Conexao com : " + connectionId);
+                            p1text.color = Color.green;
+                            preparados = true;
+                        }
+                        else
+                        {
+                            Debug.Log("me conectei com id: " + connectionId);
+                            p2text.color = Color.green;
+                            preparados = true;
+                        }
+                        goto case NetworkEventType.Nothing;
+                    case NetworkEventType.DataEvent:
                     string msg = Encoding.Unicode.GetString(recBuffer, 0, dataSize);
+                    //Debug.Log(msg);
                     string[] sepEnvio = msg.Split('|');
                     switch (sepEnvio[0])
                     {
-                        case "Preparados":
-                            preparados = true;
-                            p1text.color = Color.green;
-                            p2text.color = Color.green;
-                            break;
+                            /*case "Preparados":
+                                preparados = true;
+                                //p1text.color = Color.green;
+                                //p2text.color = Color.green;
+                                break;*/
                         case "Conectou":
-                            meuID = int.Parse(sepEnvio[1]);
-                            numP.text ="Player " + meuID.ToString();
-                            if (meuID == 1)
-                            {
-                                player1.GetComponent<Character>().nPlayer = 1;
-                                player2.GetComponent<Character>().nPlayer = 2;
-                                p1text.text = "Eu";
-                                p1text.color = Color.green;
-                                p2text.text = "Inimigo";
-                            }
-                            else
-                            {
-                                p1text.text = "Inimigo";
-                                p2text.text = "Eu";
-                                p2text.color = Color.green;
-                                player1.GetComponent<Character>().nPlayer = 2;
-                                player2.GetComponent<Character>().nPlayer = 1;
-                            }
+                                meuID = int.Parse(sepEnvio[1]);
+                                numP.text ="Player " + meuID.ToString();
+                                if (meuID == 1)
+                                {
+                                    player1.GetComponent<Character>().nPlayer = 1;
+                                    player2.GetComponent<Character>().nPlayer = 2;
+                                    //player2.GetComponent<Character>().setMaterial(2);
+                                    //player1.GetComponent<Character>().setMaterial(1);
+                                    p1text.text = "Eu";
+                                    p1text.color = Color.green;
+                                    p2text.text = "Inimigo";
+                                }
                             break;
-                        /*case "Direcao":
+                        case "Direcao":
                             float x, y, z;
                             x = float.Parse(sepEnvio[2]);
                             y = float.Parse(sepEnvio[3]);
                             z = float.Parse(sepEnvio[4]);
+                            JsonSerial dFoice = JsonUtility.FromJson<JsonSerial>(sepEnvio[5]);
                             Vector3 dir = new Vector3(x, y, z);
-                            if(int.Parse(sepEnvio[1]) == 1){
-                                player1.GetComponent<Character>().ChangeDirection(dir);
-                            }
-                            else
-                            {
-                                player2.GetComponent<Character>().ChangeDirection(dir);
-                            }
-                            break;*/
+                                if (meuID == 2)
+                                {
+                                    player1.GetComponent<Character>().ChangeDirection(dir);
+                                    player1.GetComponent<Character>().SetFoiceT(dFoice.pp, dFoice.rr);
+                                }
+                                else
+                                {
+                                    player2.GetComponent<Character>().ChangeDirection(dir);
+                                    player2.GetComponent<Character>().SetFoiceT(dFoice.pp, dFoice.rr);
+                                }
+                                break;
                         case "Pronto":
-                            if(int.Parse(sepEnvio[1]) != meuID)
-                            {
                                 if (meuID == 1)
                                 {
                                     player2Ready = true;
                                     check2.enabled = true;
-                                    p2text.color = Color.green;
+                                    //p2text.color = Color.green;
                                 }
                                 else
                                 {
-                                    p1text.color = Color.green;
+                                    //p1text.color = Color.green;
                                     player1Ready = true;
                                     check1.enabled = true;
+                                    //EnviarPlayer("Preparados|", 1, reliableChannel);
+                                    //preparados = true;
                                 }
-                            }
-                            break;
+                                break;
                         case "Comecar":
                             ComecarPartida();
                             break;
@@ -178,7 +220,7 @@ public class GameManager : MonoBehaviour
                             yp = float.Parse(sepEnvio[3]);
                             zp = float.Parse(sepEnvio[4]);
                             JsonSerial pFoice = JsonUtility.FromJson<JsonSerial>(sepEnvio[5]);
-                            if (int.Parse(sepEnvio[1]) == 1)
+                            if (meuID == 2)
                             {
                                 //player1
                                 player1.GetComponent<Character>().SetPosition(xp, yp, zp);
@@ -192,7 +234,7 @@ public class GameManager : MonoBehaviour
                             }
                                 break;
                         case "Egiro":
-                            if(int.Parse(sepEnvio[1]) == 1)
+                            if(meuID == 2)
                             {
                                 //player1 entrou girospot
                                 player1.GetComponent<Character>().GirospotEnter(girospots[int.Parse(sepEnvio[2])], bool.Parse(sepEnvio[3]));
@@ -205,7 +247,7 @@ public class GameManager : MonoBehaviour
                             }
                             break;
                         case "Sgiro":
-                            if (int.Parse(sepEnvio[1]) == 1)
+                            if (meuID == 2)
                             {
                                 //player1 saiu girospot
                                 player1.GetComponent<Character>().GirospotExit();
@@ -216,23 +258,44 @@ public class GameManager : MonoBehaviour
                                 player2.GetComponent<Character>().GirospotExit();
                             }
                             break;
-                       
-                    }
+                            case "InvDir":
+                                Debug.Log("Inverter");
+                                if(meuID == 1)
+                                {
+                                    player1.GetComponent<Character>().InverterDirecao();
+                                }
+                                break;
+                            case "TomouDano":
+                                player1.GetComponent<Character>().GiroGhostOn();
+                                break;
+                            case "CausouDano":
+                                player2.GetComponent<Character>().GiroGhostOn();
+                                break;
+                            case "Terminou":
+                                terminarPartida(int.Parse(sepEnvio[1]));
+                                break;
 
-                    break;
+                        }
+                        goto case NetworkEventType.Nothing;
                 case NetworkEventType.DisconnectEvent:
-                    //Debug.Log("DisconnectEvent");
+                        //Debug.Log("DisconnectEvent");
 
-                    break;
+                        goto case NetworkEventType.Nothing;
 
-                case NetworkEventType.BroadcastEvent:
-                    //Debug.Log("BroadcastEvent");
-                    break;
-            }
+                    case NetworkEventType.BroadcastEvent:
+                        //Debug.Log("BroadcastEvent");
+                        goto case NetworkEventType.Nothing;
+                    case NetworkEventType.Nothing:
+                        //Debug.Log("Nothing");
+                        continue;
+                }
             } while (recData != NetworkEventType.Nothing);
             
         }
-
+        if(player1Ready && player2Ready && rede && !jogando)
+        {
+            ComecarPartida();
+        }
         if(player1Ready && player2Ready && !jogando && !rede)
         {
             comecou = true;
@@ -285,7 +348,7 @@ public class GameManager : MonoBehaviour
                 //player1 = p;
                 check2.enabled = true;
                 string msg = "Pronto|" + meuID;
-                Enviar(msg, reliableChannel);
+                EnviarPlayer(msg,1, reliableChannel);
             }
             
         }
@@ -299,29 +362,27 @@ public class GameManager : MonoBehaviour
 
     public void MainMenu()
     {
+        if (meuID == 2)
+        {
+            NetworkTransport.RemoveHost(hostId);
+        }
         SceneManager.LoadScene(0);
     }
-    public void Perdi(int nPlayer)
-    {
-        endPanel.SetActive(true);
-        jogando = false;
-        player1Ready = false;
-        player2Ready = false;
-        if(nPlayer == 1)
-        {
-            winner.text = "Player 2 Ganhou!";
-        }
-        else
-        {
-            winner.text = "Player 1 Ganhou!";
-        }
-    }
+    
     private void Enviar(string mensagem, int channelID)
     {
         //Debug.Log("Enviando: " + mensagem);
         //System.Text.encodi
         byte[] msg = Encoding.Unicode.GetBytes(mensagem);
         NetworkTransport.Send(hostId, connectionId, channelID, msg, mensagem.Length * sizeof(char), out error);
+        //NetworkTransport.start
+    }
+    private void EnviarPlayer(string mensagem, int playerID, int channelID)
+    {
+        //Debug.Log("Enviando: " + mensagem);
+        //System.Text.encodi
+        byte[] msg = Encoding.Unicode.GetBytes(mensagem);
+        NetworkTransport.Send(hostId, playerID, channelID, msg, mensagem.Length * sizeof(char), out error);
     }
     public string LocalIPAddress()
     {
@@ -338,11 +399,7 @@ public class GameManager : MonoBehaviour
         }
         return localIP;
     }
-    public void EnviarDirecao(int id, Vector3 direc)
-    {
-        string m = "Direcao|" + meuID + "|" + direc.x + "|" + direc.y + "|" + direc.z;
-        Enviar(m, reliableChannel);
-    }
+    
     public void EntreiGirospot(GameObject giro, bool or)
     {
         int idgiro = getIndiceGirospot(giro);
@@ -350,13 +407,27 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log(idgiro + " idGirospot entrei");
             string msg = "Egiro|" + meuID + "|" + idgiro + "|" + or;
-            Enviar(msg, reliableChannel);
+            if(meuID == 1)
+            {
+                Enviar(msg, reliableChannel);
+            }
+            else
+            {
+                EnviarPlayer(msg,1, reliableChannel);
+            }
         }
     }
     public void SaiGirospot(GameObject giro)
     {
         string msg = "Sgiro|" + meuID;
-        Enviar(msg, reliableChannel);
+        if (meuID == 1)
+        {
+            Enviar(msg, reliableChannel);
+        }
+        else
+        {
+            EnviarPlayer(msg, 1, reliableChannel);
+        }
     }
     int getIndiceGirospot(GameObject giro)
     {
@@ -391,6 +462,41 @@ public class GameManager : MonoBehaviour
         comecou = false;
         Debug.Log("comecou");
     }
+    public void Perdi(int nPlayer)
+    {
+        endPanel.SetActive(true);
+        jogando = false;
+        player1Ready = false;
+        player2Ready = false;
+        if (nPlayer == 1)
+        {
+            winner.text = "Player 2 Ganhou!";
+        }
+        else
+        {
+            winner.text = "Player 1 Ganhou!";
+        }
+    }
+    public void terminarPartida(int nn)
+    {
+        if(meuID == 2)
+        {
+            EnviarPlayer("Terminou|" + nn, 1, reliableChannel);
+        }
+        if(nn == 1)
+        {
+            //meuId 1 ganhou
+            winner.text = "Player 1 Ganhou!";
+        }
+        else
+        {
+            winner.text = "Player 2 Ganhou!";
+        }
+        endPanel.SetActive(true);
+        jogando = false;
+        player1Ready = false;
+        player2Ready = false;
+    }
     public void EnviarPosicao(float x, float y, float z, Vector3 foiceP, Quaternion foiceR)
     {
         JsonSerial js = new JsonSerial();
@@ -398,6 +504,47 @@ public class GameManager : MonoBehaviour
         js.rr = foiceR;
         string dataAsJson = JsonUtility.ToJson(js);
         string msg = "Posicao|" + meuID + "|" + x + "|" + y + "|" + z + "|"+ dataAsJson;
-        Enviar(msg, unreliableChannel);
+        if(meuID == 1)
+        {
+            Enviar(msg, unreliableChannel);
+        }
+        else
+        {
+            EnviarPlayer(msg,1, unreliableChannel);
+        }
+    }
+    public void EnviarDirecao(Vector3 direc, Vector3 foiceP, Quaternion foiceR)
+    {
+        JsonSerial js = new JsonSerial();
+        js.pp = foiceP;
+        js.rr = foiceR;
+        string dataAsJson = JsonUtility.ToJson(js);
+        string m = "Direcao|" + meuID + "|" + direc.x + "|" + direc.y + "|" + direc.z + "|" + dataAsJson;
+        if (meuID == 1)
+        {
+            Enviar(m, unreliableChannel);
+        }
+        else
+        {
+            EnviarPlayer(m, 1, unreliableChannel);
+        }
+    }
+    public void EnviarInverterDirecao()
+    {
+        EnviarPlayer("InvDir|", 1, reliableChannel);
+    }
+    public void ClienteTomouDano()
+    {
+        EnviarPlayer("TomouDano|", 1, reliableChannel);
+    }
+    public void ClienteMeAcertou()
+    {
+        EnviarPlayer("CausouDano|", 1, reliableChannel);
+    }
+    static byte[] GetBytes(string str)
+    {
+        byte[] bytes = new byte[str.Length * sizeof(char)];
+        System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+        return bytes;
     }
 }

@@ -79,7 +79,7 @@ public class Character : MonoBehaviour
 
         //matt = Instantiate(GetComponent<MeshRenderer>().material);
         
-        if (nPlayer == 2)
+        /*if (nPlayer == 2)
         {
             GetComponent<MeshRenderer>().material = m2;
             foiceee.GetComponent<MeshRenderer>().material = m2;
@@ -92,10 +92,26 @@ public class Character : MonoBehaviour
             GetComponent<MeshRenderer>().material = mat;
             foiceee.GetComponent<MeshRenderer>().material = mat;
             cabo.GetComponent<MeshRenderer>().material = mat;
-        }
+        }*/
 
     }
-
+    /*public void setMaterial(int iii)
+    {
+        if(iii == 1)
+        {
+            GetComponent<MeshRenderer>().material = mat;
+            foiceee.GetComponent<MeshRenderer>().material = mat;
+            cabo.GetComponent<MeshRenderer>().material = mat;
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().material = m2;
+            foiceee.GetComponent<MeshRenderer>().material = m2;
+            cabo.GetComponent<MeshRenderer>().material = m2;
+            //GetComponentInChildren<MeshRenderer>().material = mat;
+            mat = m2;
+        }
+    }*/
     void Update()
     {
         if (!manager.comecou && manager.preparados)
@@ -228,7 +244,7 @@ public class Character : MonoBehaviour
         
        
         
-        if(!rotatingGirospot && manager.jogando && nPlayer == 1)
+        if(!rotatingGirospot && manager.jogando)
         {
             Move();
         }
@@ -254,11 +270,13 @@ public class Character : MonoBehaviour
     }
     public void Move()
     {
-
         //Vector3 Movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
         transform.position += direction * speed * Time.deltaTime;
-        manager.EnviarPosicao(transform.position.x, transform.position.y, transform.position.z, foice.transform.localPosition, foice.transform.localRotation);
+        if(nPlayer == 1 && manager.rede)
+        {
+            //manager.EnviarDirecao(direction, foice.transform.localPosition, foice.transform.localRotation);
+            manager.EnviarPosicao(transform.position.x, transform.position.y, transform.position.z, foice.transform.localPosition, foice.transform.localRotation);
+        }
         //enviar rotate da foice tambem;
 
     }
@@ -285,6 +303,21 @@ public class Character : MonoBehaviour
         if (vidas <= 0)
         {
             morreu();
+            if(manager.meuID == 2)
+            {
+                if(nPlayer == 2)
+                {
+                    //o cliente morreu
+                    //eu ganhei
+                    manager.terminarPartida(2);
+                }
+                else
+                {
+                    //o cliente ganhou
+                    //eu perdi
+                    manager.terminarPartida(1);
+                }
+            }
         }
     }
     public void GiroGhostOff()
@@ -300,7 +333,7 @@ public class Character : MonoBehaviour
     }
     void morreu()
     {
-        manager.Perdi(nPlayer);
+        //manager.Perdi(nPlayer);
         Destroy(gameObject);
     }
     public void InverterDirecao()
@@ -330,7 +363,7 @@ public class Character : MonoBehaviour
     }
     public void SetPosition(float x, float y, float z)
     {
-        transform.position = new Vector3(x, y, z);
+        transform.position = new Vector3(x, 0, z);
     }
     public void ChangeDirection(Vector3 vecs)
     {
@@ -338,9 +371,6 @@ public class Character : MonoBehaviour
         if (vecs != direction)
         {
             direction = vecs;
-            foice.transform.Rotate(0, 0, 180);
-            right = !right;
-            //paredeCol = true;
         }
     }
     public void SaiuParede()
@@ -453,25 +483,36 @@ public class Character : MonoBehaviour
                 colliding = false;
             }
         }
-        if (other.gameObject.tag == "Player" && !dummy && !ghost && !repelimento)
+        if (other.gameObject.tag == "Player" && !dummy && !ghost && !repelimento && manager.meuID == 2)
         {
             Debug.Log("Player no player");
             repelimento = true;
             //impulsionar ao contrario
             InverterDirecao();
+            manager.EnviarInverterDirecao();
         }
-        /*
-        if (other.gameObject.tag == "Foice" && !ghost && !repelimento)
+        
+        if (other.gameObject.tag == "Foice" && !ghost && !repelimento && manager.meuID == 2)
         {
             Character ot = other.gameObject.GetComponentInParent<Character>();
             if (!ot.ghost)
             {
                 Debug.Log("Player colidiu na foice");
                 //impulsionar ao contrario
-                InverterDirecao();
+                //InverterDirecao();
                 GiroGhostOn();
+                if(nPlayer == 1)
+                {
+                    //mandar pro outro que ele me acertou
+                    manager.ClienteMeAcertou();
+                }
+                else
+                {
+                    //mandar pro outro que ele tomou dano
+                    manager.ClienteTomouDano();
+                }
             }
-        }*/
+        }
 
         if (other.gameObject.tag == "Shield" && !repelimento)
         {
