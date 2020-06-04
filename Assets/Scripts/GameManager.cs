@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     //REDE
     private const int max_c = 2;
     private int porta = 8888;
+    private int clientPort = 8887;
     private int hostId;
     private int webHostId;
     private int reliableChannel;
@@ -51,6 +52,9 @@ public class GameManager : MonoBehaviour
     int broadcastVersion = 1;
     int broadcastSubVersion = 1;
     string broadcastData = "HELLO";
+
+    bool isHost = false;
+    bool isClient = false;
 
     void Start()
     {
@@ -75,9 +79,11 @@ public class GameManager : MonoBehaviour
             //if(GlobalClass.nn == 1)
             //{
                 //criar host/server
-            hostId = NetworkTransport.AddHost(topo, 8888);
+            hostId = NetworkTransport.AddHost(topo, porta);
             if(hostId != -1)
             {
+                Debug.Log("hostId: " + hostId);
+                isHost = true;
                 Debug.Log("Socket aberto com ID: " + hostId);
                 meuID = 2;
                 p1text.text = "Inimigo";
@@ -89,19 +95,32 @@ public class GameManager : MonoBehaviour
                 //player1.GetComponent<Character>().setMaterial(1);
                 numP.text = "Player " + meuID.ToString();
                 //Enviar("Teste|", reliableChannel);
-                //byte[] bmsg = GetBytes(broadcastData);
-                //NetworkTransport.StartBroadcastDiscovery(hostId, porta, broadcastKey, broadcastVersion, broadcastSubVersion, bmsg, bmsg.Length, 1000, out error);
-                
+                string ip = LocalIPAddress();
+                broadcastData = "Host:" + ip;
+                byte[] bmsg = GetBytes(broadcastData);
+                NetworkTransport.StartBroadcastDiscovery(hostId, clientPort, broadcastKey, 
+                    broadcastVersion, broadcastSubVersion, bmsg, bmsg.Length, 500, out error);
+                Debug.Log("Start Broadcast");
+                conectou = true;
             }
             else
             {
+                isClient = true;
                 GlobalClass.nn = 0;
-                hostId = NetworkTransport.AddHost(topo, 0);
+                
+                hostId = NetworkTransport.AddHost(topo, clientPort);
+                Debug.Log("host id: " + hostId);
+                NetworkTransport.SetBroadcastCredentials(hostId, broadcastKey, broadcastVersion,
+                    broadcastSubVersion, out error);
+                //hostId = NetworkTransport.AddHost(topo, porta);
+
                 //Debug.Log(hostId + "idHost");
                 string ip = LocalIPAddress();
                 Debug.Log(ip);
-                connectionId = NetworkTransport.Connect(hostId, ip, porta, 0, out error);
-                //NetworkTransport.SetBroadcastCredentials(hostId)
+
+                //connectionId = NetworkTransport.Connect(hostId, ip, porta, 0, out error);
+
+                
 
                 Debug.Log(connectionId + " ID");
             }
@@ -114,13 +133,41 @@ public class GameManager : MonoBehaviour
             //NetworkTransport.connect
             //NetworkTransport.packet
 
-            conectou = true;
+            //conectou = true;
         }
     }
     
     // Update is called once per frame
     void Update()
     {
+        if (isClient && !conectou)
+        {
+            int connectionId;
+            int channelId;
+            int receivedSize;
+            byte error;
+            byte[] recBuffer = new byte[1024];
+            int bufferSize = 1024;
+            int dataSize;
+            NetworkEventType networkEvent;
+            do
+            {
+                networkEvent = NetworkTransport.ReceiveFromHost(hostId, out connectionId, 
+                    out channelId, recBuffer, bufferSize, out dataSize, out error);
+                Debug.Log(networkEvent);
+
+                if(networkEvent == NetworkEventType.BroadcastEvent)
+                {
+                    string hostIP;
+                    int hostPort;
+                    NetworkTransport.GetBroadcastConnectionInfo(hostId, out hostIP, out hostPort, out error);
+
+                    NetworkTransport.GetBroadcastConnectionMessage(hostId, recBuffer, bufferSize, 
+                        out dataSize, out error);
+                    OnReceivedBroadcast(hostIP, GetString(recBuffer));
+                }
+            } while (networkEvent != NetworkEventType.Nothing);
+        }
 
         if (conectou)
         {
@@ -318,6 +365,12 @@ public class GameManager : MonoBehaviour
             tempo.text = minutos + ":" + segundos;
         }
         
+    }
+    public void OnReceivedBroadcast(string fromAddress, string data)
+    {
+        //Debug.Log("Got broadcast from [" + fromAddress + "] " + data);
+        string[] itens = data.Split(':');
+        Debug.Log("Host IP: " + itens[1]);
     }
     public void PlayerReady(int nPlayer, GameObject p)
     {
@@ -546,5 +599,11 @@ public class GameManager : MonoBehaviour
         byte[] bytes = new byte[str.Length * sizeof(char)];
         System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
         return bytes;
+    }
+    static string GetString(byte[] bytes)
+    {
+        char[] chars = new char[bytes.Length / sizeof(char)];
+        System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+        return new string(chars);
     }
 }
