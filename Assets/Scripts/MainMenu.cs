@@ -6,25 +6,15 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public GameObject mainPage, multiPage;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void StartButton()
-    {
-        SceneManager.LoadScene(1);
-    }
-    public void RedeButton()
-    {
-        SceneManager.LoadScene(2);
-    }
+    //public void StartButton()
+    //{
+    //    SceneManager.LoadScene(1);
+    //}
+    //public void RedeButton()
+    //{
+    //    SceneManager.LoadScene(2);
+    //}
     public void QuitButton()
     {
         Application.Quit();
