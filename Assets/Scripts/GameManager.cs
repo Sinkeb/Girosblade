@@ -33,11 +33,12 @@ public class GameManager : MonoBehaviour
     public GameObject startPanel;
     public Image check1, check2;
     public TextMeshProUGUI p1text, p2text;
+    public TextMeshProUGUI HostIpText;
 
     //REDE
     private const int max_c = 2;
     private int porta = 8888;
-    private int clientPort = 8887;
+    private int clientPort = 7777;
     private int hostId;
     private int webHostId;
     private int reliableChannel;
@@ -79,9 +80,12 @@ public class GameManager : MonoBehaviour
             //if(GlobalClass.nn == 1)
             //{
                 //criar host/server
-            hostId = NetworkTransport.AddHost(topo, porta);
-            if(hostId != -1)
+            
+            //if(hostId != -1)
+            if (GlobalClass.nn == 1)//HOST
             {
+                Debug.Log(GlobalClass.nn + "Global");
+                hostId = NetworkTransport.AddHost(topo, 0);
                 Debug.Log("hostId: " + hostId);
                 isHost = true;
                 Debug.Log("Socket aberto com ID: " + hostId);
@@ -98,29 +102,39 @@ public class GameManager : MonoBehaviour
                 string ip = LocalIPAddress();
                 broadcastData = "Host:" + ip;
                 byte[] bmsg = GetBytes(broadcastData);
-                NetworkTransport.StartBroadcastDiscovery(hostId, clientPort, broadcastKey, 
-                    broadcastVersion, broadcastSubVersion, bmsg, bmsg.Length, 500, out error);
+                if (NetworkTransport.IsBroadcastDiscoveryRunning())
+                {
+                    Debug.Log("Broadcast Already Running");
+                    NetworkTransport.StopBroadcastDiscovery();
+                    NetworkTransport.RemoveHost(0);
+                }
+                HostIpText.text = ip;
+                NetworkTransport.StopBroadcastDiscovery();
+                NetworkTransport.StartBroadcastDiscovery(hostId, clientPort, broadcastKey,
+                broadcastVersion, broadcastSubVersion, bmsg, bmsg.Length, 500, out error);
+                
                 Debug.Log("Start Broadcast");
                 conectou = true;
             }
-            else
+            else//CLIENTE
             {
+                Debug.Log(GlobalClass.nn + "Global");
+
                 isClient = true;
-                GlobalClass.nn = 0;
-                
+
                 hostId = NetworkTransport.AddHost(topo, clientPort);
                 Debug.Log("host id: " + hostId);
                 NetworkTransport.SetBroadcastCredentials(hostId, broadcastKey, broadcastVersion,
                     broadcastSubVersion, out error);
+                
                 //hostId = NetworkTransport.AddHost(topo, porta);
 
                 //Debug.Log(hostId + "idHost");
-                string ip = LocalIPAddress();
-                Debug.Log(ip);
+                //string ip = LocalIPAddress();
+                //Debug.Log(ip);
 
                 //connectionId = NetworkTransport.Connect(hostId, ip, porta, 0, out error);
-
-                
+                //connectionId = NetworkTransport.Connect(hostId, "192.168.0.103", porta, 0, out error);
 
                 Debug.Log(connectionId + " ID");
             }
@@ -144,7 +158,6 @@ public class GameManager : MonoBehaviour
         {
             int connectionId;
             int channelId;
-            int receivedSize;
             byte error;
             byte[] recBuffer = new byte[1024];
             int bufferSize = 1024;
@@ -154,7 +167,7 @@ public class GameManager : MonoBehaviour
             {
                 networkEvent = NetworkTransport.ReceiveFromHost(hostId, out connectionId, 
                     out channelId, recBuffer, bufferSize, out dataSize, out error);
-                Debug.Log(networkEvent);
+                Debug.Log(networkEvent + " teste Broadcast");
 
                 if(networkEvent == NetworkEventType.BroadcastEvent)
                 {
@@ -371,6 +384,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Got broadcast from [" + fromAddress + "] " + data);
         string[] itens = data.Split(':');
         Debug.Log("Host IP: " + itens[1]);
+        HostIpText.text = itens[1];
     }
     public void PlayerReady(int nPlayer, GameObject p)
     {
