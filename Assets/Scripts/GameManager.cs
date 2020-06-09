@@ -537,11 +537,11 @@ public class GameManager : MonoBehaviour
         player2Ready = false;
         if (nPlayer == 1)
         {
-            winner.text = "Player 2 Ganhou!";
+            winner.text = "Vitória! Parabéns";
         }
         else
         {
-            winner.text = "Player 1 Ganhou!";
+            winner.text = "Perdeu! Que pena";
         }
     }
     public void terminarPartida(int nn)
