@@ -7,11 +7,14 @@ ScriptsOnlyBuild:
     - GameManager
     - Girospot
     - MainMenu
+    - SpawnLightning
     Unity.TextMeshPro.dll:
     - TMPro.TMP_FontAsset
+    - TMPro.TMP_InputField
     - TMPro.TMP_Settings
     - TMPro.TMP_SpriteAsset
     - TMPro.TMP_StyleSheet
+    - TMPro.TMP_SubMeshUI
     - TMPro.TextMeshProUGUI
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
@@ -29,6 +32,8 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.RectMask2D
+    - UnityEngine.UI.Toggle
     com.unity.multiplayer-hlapi.Runtime.dll:
     - UnityEngine.Networking.NetworkCallbacks
   sceneClasses:
@@ -70,27 +75,29 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9924}
     - Class: 114
+      Script: {instanceID: 10168}
+    - Class: 114
       Script: {instanceID: 10264}
     - Class: 114
       Script: {instanceID: 10356}
     - Class: 114
       Script: {instanceID: 10458}
     - Class: 114
-      Script: {instanceID: 10778}
+      Script: {instanceID: 10780}
     - Class: 114
-      Script: {instanceID: 11018}
+      Script: {instanceID: 11020}
     - Class: 114
-      Script: {instanceID: 11142}
+      Script: {instanceID: 11144}
     - Class: 114
-      Script: {instanceID: 11226}
+      Script: {instanceID: 11228}
     - Class: 114
-      Script: {instanceID: 11290}
+      Script: {instanceID: 11292}
     - Class: 114
-      Script: {instanceID: 11446}
+      Script: {instanceID: 11448}
     - Class: 114
-      Script: {instanceID: 11582}
+      Script: {instanceID: 11584}
     - Class: 114
-      Script: {instanceID: 11704}
+      Script: {instanceID: 11706}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -155,21 +162,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10458}
     - Class: 114
-      Script: {instanceID: 10778}
+      Script: {instanceID: 10780}
     - Class: 114
-      Script: {instanceID: 11018}
+      Script: {instanceID: 11020}
     - Class: 114
-      Script: {instanceID: 11142}
+      Script: {instanceID: 11144}
     - Class: 114
-      Script: {instanceID: 11226}
+      Script: {instanceID: 11228}
     - Class: 114
-      Script: {instanceID: 11290}
+      Script: {instanceID: 11292}
     - Class: 114
-      Script: {instanceID: 11446}
+      Script: {instanceID: 11448}
     - Class: 114
-      Script: {instanceID: 11582}
+      Script: {instanceID: 11584}
     - Class: 114
-      Script: {instanceID: 11704}
+      Script: {instanceID: 11706}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -218,25 +225,33 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9924}
     - Class: 114
+      Script: {instanceID: 9950}
+    - Class: 114
+      Script: {instanceID: 10150}
+    - Class: 114
       Script: {instanceID: 10356}
     - Class: 114
       Script: {instanceID: 10384}
     - Class: 114
-      Script: {instanceID: 10778}
+      Script: {instanceID: 10706}
     - Class: 114
-      Script: {instanceID: 11018}
+      Script: {instanceID: 10780}
     - Class: 114
-      Script: {instanceID: 11036}
+      Script: {instanceID: 11020}
     - Class: 114
-      Script: {instanceID: 11108}
+      Script: {instanceID: 11038}
     - Class: 114
-      Script: {instanceID: 11226}
+      Script: {instanceID: 11110}
     - Class: 114
-      Script: {instanceID: 11290}
+      Script: {instanceID: 11228}
     - Class: 114
-      Script: {instanceID: 11468}
+      Script: {instanceID: 11292}
     - Class: 114
-      Script: {instanceID: 11704}
+      Script: {instanceID: 11470}
+    - Class: 114
+      Script: {instanceID: 11706}
+    - Class: 114
+      Script: {instanceID: 11720}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -530,6 +545,12 @@ ScriptsOnlyBuild:
     className: RemoteTestResultSender
   - hash:
       serializedVersion: 2
+      Hash: ccf276f4b14cc0b19368362fb760cbc2
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SpawnLightning
+  - hash:
+      serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -614,7 +635,7 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 69a6afff69d833b30ca59e51c58b2d7d
+      Hash: 43a485809b5f75fd9be4538f7c6541f0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MainMenu
