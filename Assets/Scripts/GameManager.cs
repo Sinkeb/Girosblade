@@ -379,8 +379,6 @@ public class GameManager : MonoBehaviour
     {
         if (!conectou)
         {
-
-
             //Debug.Log("Got broadcast from [" + fromAddress + "] " + data);
             string[] itens = data.Split(':');
             Debug.Log("Host IP: " + itens[1]);
@@ -555,15 +553,31 @@ public class GameManager : MonoBehaviour
         {
             EnviarPlayer("Terminou|" + nn, 1, reliableChannel);
         }
-        if(nn == 1)
+        if(meuID == 1)
         {
-            //meuId 1 ganhou
-            winner.text = "Player 1 Ganhou!";
+            if (nn == 1)
+            {
+                //meuId 1 ganhou
+                winner.text = "Venceu! Muito bem";
+            }
+            else
+            {
+                winner.text = "Perdeu! Que pena";
+            }
         }
         else
         {
-            winner.text = "Player 2 Ganhou!";
+            if (nn == 1)
+            {
+                //meuId 1 ganhou
+                winner.text = "Perdeu! Que pena";
+            }
+            else
+            {
+                winner.text = "Venceu! Muito bem";
+            }
         }
+        
         endPanel.SetActive(true);
         jogando = false;
         player1Ready = false;

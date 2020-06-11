@@ -1797,8 +1797,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.535, y: 6.2}
-  m_SizeDelta: {x: 138.19, y: 36.838}
+  m_AnchoredPosition: {x: 23.88, y: 9.27}
+  m_SizeDelta: {x: 168.89, y: 30.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &509954996
 MonoBehaviour:
@@ -1818,7 +1818,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Utilizar Broadcast para encontrar o IP(Requer Firewall Desabilitado)
+  m_text: 'Utilizar Broadcast para encontrar o IP
+
+    (Pode precisar desabilitar o Firewall)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1884,15 +1886,15 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -0.5581342, w: 0}
   m_textInfo:
     textComponent: {fileID: 509954996}
-    characterCount: 68
+    characterCount: 77
     spriteCount: 0
-    spaceCount: 7
-    wordCount: 9
+    spaceCount: 10
+    wordCount: 11
     linkCount: 0
-    lineCount: 3
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0

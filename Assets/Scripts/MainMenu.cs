@@ -22,14 +22,14 @@ public class MainMenu : MonoBehaviour
     //}
     public void toggleChange(bool bbb)
     {
-        /*if (broad.isOn)
+        if (broad.isOn)
         {
-            ipInput.SetActive(false);
+            if (ipInput.activeSelf)
+            {
+                ipInput.SetActive(false);
+                botConect.SetActive(false);
+            }
         }
-        else
-        {
-            ipInput.SetActive(true);
-        }*/
     }
     public void QuitButton()
     {
