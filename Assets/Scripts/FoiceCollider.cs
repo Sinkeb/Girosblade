@@ -6,17 +6,6 @@ public class FoiceCollider : MonoBehaviour
 {
     public Character pers;
 
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void DesativarCollider()
     {
         GetComponent<BoxCollider>().enabled = false;
@@ -34,6 +23,8 @@ public class FoiceCollider : MonoBehaviour
             if (!pers.girospot.GetComponent<Girospot>().inativo)
             {
                 pers.colliding = true;
+                if (pers.nPlayer == 1)
+                    other.GetComponent<Girospot>().Outline(true);
             }
             else
             {
@@ -73,6 +64,8 @@ public class FoiceCollider : MonoBehaviour
         {
             pers.girospot = null;
             pers.colliding = false;
+            if (pers.nPlayer == 1)
+                other.GetComponent<Girospot>().Outline(false);
         }
 
     }

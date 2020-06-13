@@ -22,11 +22,14 @@ public class Girospot : MonoBehaviour
     public Image loading;
     float maxTime = 5f;
 
+    public Outline myOutline;
+
     void Start()
     {
         playerConectado = false;
         right = true;
         initialRotation = transform.localRotation;
+        myOutline.enabled = false;
     }
 
     void Update()
@@ -38,11 +41,13 @@ public class Girospot : MonoBehaviour
             {
                 //transform.Rotate(Vector3.up, -360 * Time.deltaTime);
                 player.transform.RotateAround(transform.position, Vector3.up, -360 * Time.deltaTime);
+                Outline(false);
             }
             else
             {
                 //transform.Rotate(Vector3.up, 360 * Time.deltaTime);
                 player.transform.RotateAround(transform.position, Vector3.up, 360 * Time.deltaTime);
+                Outline(false);
             }
 
         }
@@ -52,7 +57,7 @@ public class Girospot : MonoBehaviour
             GetComponent<CapsuleCollider>().enabled = false;
             inativoTimer += Time.deltaTime;
             loading.GetComponent<Image>().fillAmount = inativoTimer / maxTime;
-            if(inativoTimer >= maxTime)
+            if (inativoTimer >= maxTime)
             {
                 GetComponent<MeshRenderer>().enabled = true;
                 GetComponent<CapsuleCollider>().enabled = true;
@@ -63,7 +68,8 @@ public class Girospot : MonoBehaviour
         }
     }
 
-    public Vector3 getP1() {
+    public Vector3 getP1()
+    {
         return p1.transform.position;
     }
     public Vector3 getP2()
@@ -76,6 +82,7 @@ public class Girospot : MonoBehaviour
         playerConectado = true;
         right = r;
         player = p;
+        Outline(false);
         shield.GetComponent<CapsuleCollider>().enabled = true;
         sShield.GetComponent<SpriteRenderer>().enabled = true;
     }
@@ -85,8 +92,14 @@ public class Girospot : MonoBehaviour
         playerConectado = false;
         player = null;
         inativo = true;
+        Outline(false);
         loading.GetComponent<Image>().enabled = true;
         shield.GetComponent<CapsuleCollider>().enabled = false;
         sShield.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    public void Outline(bool t)
+    {
+        myOutline.enabled = t;
     }
 }

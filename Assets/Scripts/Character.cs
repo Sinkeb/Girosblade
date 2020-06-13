@@ -8,7 +8,6 @@ public class Character : MonoBehaviour
 {
     public GameObject personagem;
     public GameObject foice;
-    public GameObject foicePivot, foicePivot2;
     public bool rotating = false;
     public float rotate = 90;
     public bool right = true;
@@ -41,7 +40,7 @@ public class Character : MonoBehaviour
     Vector3 corpoInitialPosition;
     Quaternion corpoInitialRotation;
 
-    public Vector3 direction = new Vector3(0,0,0);
+    public Vector3 direction = new Vector3(0, 0, 0);
     Vector3 esquerda = new Vector3(-1, 0, 0);
     Vector3 direita = new Vector3(1, 0, 0);
     Vector3 cima = new Vector3(0, 0, 1);
@@ -78,7 +77,7 @@ public class Character : MonoBehaviour
         corpoInitialRotation = transform.localRotation;
 
         //matt = Instantiate(GetComponent<MeshRenderer>().material);
-        
+
         /*if (nPlayer == 2)
         {
             GetComponent<MeshRenderer>().material = m2;
@@ -116,7 +115,7 @@ public class Character : MonoBehaviour
     {
         if (!manager.comecou && manager.preparados)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && nPlayer ==1)
+            if (Input.GetKeyDown(KeyCode.Space) && nPlayer == 1)
             {
                 manager.PlayerReady(nPlayer, gameObject);
             }
@@ -130,7 +129,7 @@ public class Character : MonoBehaviour
             GetComponent<CapsuleCollider>().enabled = false;
             //GetComponent<BoxCollider>
             ghostTimer += Time.deltaTime;
-            if(ghostTimer >= 3.5f)
+            if (ghostTimer >= 3.5f)
             {
                 Debug.Log("sair do ghost");
                 ghostTimer = 0f;
@@ -140,7 +139,7 @@ public class Character : MonoBehaviour
         if (repelimento)
         {
             repelimentoTimer += Time.deltaTime;
-            if(repelimentoTimer >= 0.8f)
+            if (repelimentoTimer >= 0.8f)
             {
                 Debug.Log("Acabou Repelimento");
                 repelimentoTimer = 0f;
@@ -151,13 +150,13 @@ public class Character : MonoBehaviour
         if (onGirospot && nPlayer == 1)
         {
             giroTime += Time.deltaTime;
-            if(giroTime >= giroTimeMax)
+            if (giroTime >= giroTimeMax)
             {
                 giroTime = 0f;
                 SairGirospot();
             }
         }
-        else if(onGirospot && manager.rede && nPlayer == 1)
+        else if (onGirospot && manager.rede && nPlayer == 1)
         {
             giroTime += Time.deltaTime;
             if (giroTime >= giroTimeMax)
@@ -166,7 +165,7 @@ public class Character : MonoBehaviour
                 SairGirospot();
             }
         }
-       
+
         //gameObject.GetComponent<CapsuleCollider>().tr
         if (!dummy && nPlayer == 1 && manager.jogando)
         {
@@ -230,9 +229,10 @@ public class Character : MonoBehaviour
 
         if (!rotating && !rotatingGirospot && !dummy)
         {
-            if (right) {
+            if (right)
+            {
                 //StartCoroutine(RotateAround(Vector3.up, 360, 1f, foice, personagem));
-                foice.transform.RotateAround(personagem.transform.position,Vector3.up, 360 * Time.deltaTime);
+                foice.transform.RotateAround(personagem.transform.position, Vector3.up, 360 * Time.deltaTime);
             }
             else
             {
@@ -241,16 +241,16 @@ public class Character : MonoBehaviour
                 foice.transform.RotateAround(personagem.transform.position, Vector3.up, -360 * Time.deltaTime);
             }
         }
-        
-       
-        
-        if(!rotatingGirospot && manager.jogando)
+
+
+
+        if (!rotatingGirospot && manager.jogando)
         {
             Move();
         }
     }
 
-    
+
 
     IEnumerator RotateAround(Vector3 axis, float angle, float duration, GameObject p_me, GameObject p_object)
     {
@@ -272,7 +272,7 @@ public class Character : MonoBehaviour
     {
         //Vector3 Movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         transform.position += direction * speed * Time.deltaTime;
-        if(nPlayer == 1 && manager.rede)
+        if (nPlayer == 1 && manager.rede)
         {
             //manager.EnviarDirecao(direction, foice.transform.localPosition, foice.transform.localRotation);
             manager.EnviarPosicao(transform.position.x, transform.position.y, transform.position.z, foice.transform.localPosition, foice.transform.localRotation);
@@ -290,7 +290,8 @@ public class Character : MonoBehaviour
     {
         return manager.rede;
     }
-    public void GiroGhostOn() {
+    public void GiroGhostOn()
+    {
         //matt.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.25f);
         GetComponent<MeshRenderer>().material = matGhost;
         foiceee.GetComponent<MeshRenderer>().material = matGhost;
@@ -303,9 +304,9 @@ public class Character : MonoBehaviour
         if (vidas <= 0)
         {
             morreu();
-            if(manager.meuID == 2)
+            if (manager.meuID == 2)
             {
-                if(nPlayer == 2)
+                if (nPlayer == 2)
                 {
                     //o cliente morreu
                     //eu ganhei
@@ -345,7 +346,7 @@ public class Character : MonoBehaviour
     }
     public void ColisaoParede(Vector3 dir)
     {
-        if(nPlayer == 1)
+        if (nPlayer == 1)
         {
             direction = new Vector3(direction.x * dir.x, 0, direction.z * dir.z);
             foice.transform.Rotate(0, 0, 180);
@@ -356,10 +357,10 @@ public class Character : MonoBehaviour
                 //manager.EnviarDirecao(nPlayer, direction);
             }
         }
-        
+
         //colidiu com a parede - mandar pro SERVER
         //nPlayer, vec3 direcao,
-        
+
     }
     public void SetPosition(float x, float y, float z)
     {
@@ -403,6 +404,7 @@ public class Character : MonoBehaviour
         transform.localRotation = corpoInitialRotation;
         foice.transform.localRotation = initialRotation;
         foice.transform.localPosition = initialPosition;
+        girospot.GetComponent<Girospot>().Outline(false);
 
         //transform.SetParent(girospot.transform);
         if (right)
@@ -426,6 +428,7 @@ public class Character : MonoBehaviour
         right = or;
         girospot = gi;
         rotatingGirospot = true;
+        girospot.GetComponent<Girospot>().Outline(false);
         transform.localPosition = corpoInitialPosition;
         transform.localRotation = corpoInitialRotation;
         foice.transform.localRotation = initialRotation;
@@ -469,13 +472,15 @@ public class Character : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log(other.gameObject.name);
-        
+
         if (other.gameObject.tag == "Girospot")
         {
             girospot = other.gameObject;
             if (!girospot.GetComponent<Girospot>().inativo)
             {
                 colliding = true;
+                if (nPlayer == 1)
+                    other.GetComponent<Girospot>().Outline(true);
             }
             else
             {
@@ -491,7 +496,7 @@ public class Character : MonoBehaviour
             InverterDirecao();
             manager.EnviarInverterDirecao();
         }
-        
+
         if (other.gameObject.tag == "Foice" && !ghost && !repelimento && manager.meuID == 2)
         {
             Character ot = other.gameObject.GetComponentInParent<Character>();
@@ -501,7 +506,7 @@ public class Character : MonoBehaviour
                 //impulsionar ao contrario
                 //InverterDirecao();
                 GiroGhostOn();
-                if(nPlayer == 1)
+                if (nPlayer == 1)
                 {
                     //mandar pro outro que ele me acertou
                     manager.ClienteMeAcertou();
@@ -528,21 +533,23 @@ public class Character : MonoBehaviour
         {
             girospot = null;
             colliding = false;
+            if (nPlayer == 1)
+                other.GetComponent<Girospot>().Outline(false);
         }
-        
-    }
-        //private void OnTriggerEnter(Collision collision)
-        //{
-        //}
 
-        //private void OnCollisionExit(Collision collision)
-        //{
-        //    if (collision.gameObject.tag == "Girospot")
-        //    {
-        //        girospot = null;
-        //        colliding = false;
-        //    }
-        //}
+    }
+    //private void OnTriggerEnter(Collision collision)
+    //{
+    //}
+
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Girospot")
+    //    {
+    //        girospot = null;
+    //        colliding = false;
+    //    }
+    //}
 
     void ConnectTo()
     {
@@ -554,5 +561,5 @@ public class Character : MonoBehaviour
 
         HostTopology topo = new HostTopology(cc, 1);*/
     }
-    }
+}
 
