@@ -10,6 +10,8 @@ public class MainMenu : MonoBehaviour
     public GameObject mainPage, multiPage;
     public Toggle broad;
     public GameObject ipInput;
+    public TMP_InputField floorSkin;
+    public TMP_InputField girospotSkin;
     public GameObject botConect;
 
     //public void StartButton()
@@ -47,6 +49,8 @@ public class MainMenu : MonoBehaviour
     }
     public void CriarJogo()
     {
+        GlobalClass.floorSkin = int.Parse(floorSkin.text);
+        GlobalClass.girospotSkin = int.Parse(girospotSkin.text);
         if (broad.isOn)
         {
             GlobalClass.broadcast = true;
@@ -63,6 +67,8 @@ public class MainMenu : MonoBehaviour
     }
     public void EntrarJogo()
     {
+        GlobalClass.floorSkin = int.Parse(floorSkin.text);
+        GlobalClass.girospotSkin = int.Parse(girospotSkin.text);
         if (broad.isOn)
         {
             GlobalClass.broadcast = true;
@@ -78,6 +84,8 @@ public class MainMenu : MonoBehaviour
     }
     public void BotaoEntrar()
     {
+        GlobalClass.floorSkin = int.Parse(floorSkin.text);
+        GlobalClass.girospotSkin = int.Parse(girospotSkin.text);
         ipInput.SetActive(true);
         GlobalClass.broadcast = false;
         GlobalClass.nn = 0;

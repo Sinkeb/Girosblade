@@ -8,6 +8,7 @@ ScriptsOnlyBuild:
     - GameManager
     - Girospot
     - MainMenu
+    - MapBuilder
     - Outline
     - SpawnLightning
     Unity.TextMeshPro.dll:
@@ -36,6 +37,8 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Image
     - UnityEngine.UI.RectMask2D
     - UnityEngine.UI.Toggle
+    com.unity.multiplayer-hlapi.Runtime.dll:
+    - UnityEngine.Networking.NetworkCallbacks
   sceneClasses:
     Assets/Scenes/Areana1Rede.unity:
     - Class: 1
@@ -71,37 +74,39 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9692}
+      Script: {instanceID: 9696}
     - Class: 114
-      Script: {instanceID: 9924}
+      Script: {instanceID: 9928}
     - Class: 114
-      Script: {instanceID: 10168}
+      Script: {instanceID: 10172}
     - Class: 114
-      Script: {instanceID: 10264}
+      Script: {instanceID: 10268}
     - Class: 114
-      Script: {instanceID: 10356}
+      Script: {instanceID: 10360}
     - Class: 114
-      Script: {instanceID: 10458}
+      Script: {instanceID: 10462}
     - Class: 114
-      Script: {instanceID: 10780}
+      Script: {instanceID: 10786}
     - Class: 114
-      Script: {instanceID: 11020}
+      Script: {instanceID: 10858}
     - Class: 114
-      Script: {instanceID: 11144}
+      Script: {instanceID: 11028}
     - Class: 114
-      Script: {instanceID: 11228}
+      Script: {instanceID: 11152}
     - Class: 114
-      Script: {instanceID: 11292}
+      Script: {instanceID: 11210}
     - Class: 114
-      Script: {instanceID: 11448}
+      Script: {instanceID: 11238}
     - Class: 114
-      Script: {instanceID: 11584}
+      Script: {instanceID: 11302}
     - Class: 114
-      Script: {instanceID: 11706}
+      Script: {instanceID: 11460}
     - Class: 114
-      Script: {instanceID: 19676}
+      Script: {instanceID: 11596}
     - Class: 114
-      Script: {instanceID: 19686}
+      Script: {instanceID: 11718}
+    - Class: 114
+      Script: {instanceID: 14042}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -156,33 +161,33 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9692}
+      Script: {instanceID: 9696}
     - Class: 114
-      Script: {instanceID: 9924}
+      Script: {instanceID: 9928}
     - Class: 114
-      Script: {instanceID: 10264}
+      Script: {instanceID: 10268}
     - Class: 114
-      Script: {instanceID: 10356}
+      Script: {instanceID: 10360}
     - Class: 114
-      Script: {instanceID: 10458}
+      Script: {instanceID: 10462}
     - Class: 114
-      Script: {instanceID: 10780}
+      Script: {instanceID: 10786}
     - Class: 114
-      Script: {instanceID: 11020}
+      Script: {instanceID: 11028}
     - Class: 114
-      Script: {instanceID: 11144}
+      Script: {instanceID: 11152}
     - Class: 114
-      Script: {instanceID: 11228}
+      Script: {instanceID: 11210}
     - Class: 114
-      Script: {instanceID: 11292}
+      Script: {instanceID: 11238}
     - Class: 114
-      Script: {instanceID: 11448}
+      Script: {instanceID: 11302}
     - Class: 114
-      Script: {instanceID: 11584}
+      Script: {instanceID: 11460}
     - Class: 114
-      Script: {instanceID: 11706}
+      Script: {instanceID: 11596}
     - Class: 114
-      Script: {instanceID: 19686}
+      Script: {instanceID: 11718}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -212,7 +217,13 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 21
       Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
     - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
@@ -227,42 +238,50 @@ ScriptsOnlyBuild:
     - Class: 109
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9692}
+      Script: {instanceID: 9696}
     - Class: 114
-      Script: {instanceID: 9924}
+      Script: {instanceID: 9928}
     - Class: 114
-      Script: {instanceID: 9950}
+      Script: {instanceID: 9954}
     - Class: 114
-      Script: {instanceID: 10150}
+      Script: {instanceID: 10154}
     - Class: 114
-      Script: {instanceID: 10356}
+      Script: {instanceID: 10360}
     - Class: 114
-      Script: {instanceID: 10384}
+      Script: {instanceID: 10388}
     - Class: 114
-      Script: {instanceID: 10706}
+      Script: {instanceID: 10712}
     - Class: 114
-      Script: {instanceID: 10780}
+      Script: {instanceID: 10786}
     - Class: 114
-      Script: {instanceID: 11020}
+      Script: {instanceID: 11028}
     - Class: 114
-      Script: {instanceID: 11038}
+      Script: {instanceID: 11046}
     - Class: 114
-      Script: {instanceID: 11110}
+      Script: {instanceID: 11118}
     - Class: 114
-      Script: {instanceID: 11228}
+      Script: {instanceID: 11152}
     - Class: 114
-      Script: {instanceID: 11292}
+      Script: {instanceID: 11210}
     - Class: 114
-      Script: {instanceID: 11470}
+      Script: {instanceID: 11238}
     - Class: 114
-      Script: {instanceID: 11706}
+      Script: {instanceID: 11302}
     - Class: 114
-      Script: {instanceID: 11720}
+      Script: {instanceID: 11482}
+    - Class: 114
+      Script: {instanceID: 11718}
+    - Class: 114
+      Script: {instanceID: 11732}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
       Script: {instanceID: 0}
+    - Class: 136
+      Script: {instanceID: 0}
     - Class: 157
+      Script: {instanceID: 0}
+    - Class: 212
       Script: {instanceID: 0}
     - Class: 213
       Script: {instanceID: 0}
@@ -575,6 +594,12 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
+      Hash: c7c8e48a951162a1fb562a64fec4c577
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: CaboCollider
+  - hash:
+      serializedVersion: 2
       Hash: 5ad4aa237d47ac2bab17bacb672edf7a
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -641,13 +666,13 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 6075cdd9e56150e2c6f85695663a26a3
+      Hash: a89f5cdd60a0d5f9a197305aadc8098f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MainMenu
   - hash:
       serializedVersion: 2
-      Hash: 3a8e197bb120c96efb8d1c2fc19fa868
+      Hash: 80a6b67eeb836af5e6f774cfe68fe516
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Girospot
@@ -657,6 +682,12 @@ ScriptsOnlyBuild:
     assemblyName: com.unity.multiplayer-hlapi.Runtime.dll
     namespaceName: UnityEngine.Networking
     className: NetworkBehaviour
+  - hash:
+      serializedVersion: 2
+      Hash: ff7f58b226cfe4de0dc241bd88d5a904
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Outline
   - hash:
       serializedVersion: 2
       Hash: ee0cef6caaac8ae485bfa82f000f0f7b
@@ -827,16 +858,10 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   - hash:
       serializedVersion: 2
-      Hash: c7c8e48a951162a1fb562a64fec4c577
+      Hash: 62e040979f1bcc5cfdb183bf34b809bf
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: CaboCollider
-  - hash:
-      serializedVersion: 2
-      Hash: ff7f58b226cfe4de0dc241bd88d5a904
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Outline
+    className: MapBuilder
   platform: 5
   scenePathNames:
   - Assets/Scenes/MainMenu.unity

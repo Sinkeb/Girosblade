@@ -8,7 +8,7 @@ public class Girospot : MonoBehaviour
     public GameObject p1;
     public GameObject p2;
     GameObject player;
-
+    public GameObject malha;
     bool playerConectado;
     bool right;
     Quaternion initialRotation;
@@ -53,13 +53,29 @@ public class Girospot : MonoBehaviour
         }
         if (inativo)
         {
-            GetComponent<MeshRenderer>().enabled = false;
+            if(malha!=null)
+            {
+                Debug.Log("maaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalha ");
+                malha.GetComponent<MeshRenderer>().enabled = false;
+            }
+            else
+            {
+                GetComponent<MeshRenderer>().enabled = false;
+            }
             GetComponent<CapsuleCollider>().enabled = false;
             inativoTimer += Time.deltaTime;
             loading.GetComponent<Image>().fillAmount = inativoTimer / maxTime;
             if (inativoTimer >= maxTime)
             {
-                GetComponent<MeshRenderer>().enabled = true;
+                if (malha != null)
+                {
+
+                    malha.GetComponent<MeshRenderer>().enabled = true;
+                }
+                else
+                {
+                    GetComponent<MeshRenderer>().enabled = true;
+                }
                 GetComponent<CapsuleCollider>().enabled = true;
                 inativo = false;
                 inativoTimer = 0f;
