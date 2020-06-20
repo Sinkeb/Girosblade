@@ -46,7 +46,7 @@ public class Character : MonoBehaviour
     Vector3 cima = new Vector3(0, 0, 1);
     Vector3 baixo = new Vector3(0, 0, -1);
 
-    bool paredeCol = false;
+    public bool paredeCol = false;
 
     Material[] materiais;
 
@@ -54,7 +54,7 @@ public class Character : MonoBehaviour
 
     public int nPlayer = 1;
     GameManager manager;
-
+    Material[] novosMats, novosMatsGhost;
 
 
     //REDE
@@ -92,7 +92,12 @@ public class Character : MonoBehaviour
             foiceee.GetComponent<MeshRenderer>().material = mat;
             cabo.GetComponent<MeshRenderer>().material = mat;
         }*/
-
+        novosMats = new Material[2];
+        novosMats[0] = mat;
+        novosMats[1] = mat;
+        novosMatsGhost = new Material[2];
+        novosMatsGhost[0] = matGhost;
+        novosMatsGhost[1] = matGhost;
     }
     /*public void setMaterial(int iii)
     {
@@ -187,7 +192,7 @@ public class Character : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.R) && !dummy)
             {
-                foice.transform.Rotate(0, 0, 180);
+                //foice.transform.Rotate(0, 0, 180);
                 right = !right;
             }
             if (Input.GetKeyDown(KeyCode.Space) && colliding && !dummy)
@@ -292,9 +297,14 @@ public class Character : MonoBehaviour
     }
     public void GiroGhostOn()
     {
+        Debug.Log("GiroGhostOn");
         //matt.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.25f);
         GetComponent<MeshRenderer>().material = matGhost;
-        foiceee.GetComponent<MeshRenderer>().material = matGhost;
+        
+        //foiceee.GetComponent<MeshRenderer>().material = matGhost;
+        //foiceee.GetComponent<Renderer>().matei
+        foiceee.GetComponent<MeshRenderer>().materials = novosMatsGhost;
+
         cabo.GetComponent<MeshRenderer>().material = matGhost;
         //GetComponentInChildren<MeshRenderer>().material = matGhost;
 
@@ -323,9 +333,12 @@ public class Character : MonoBehaviour
     }
     public void GiroGhostOff()
     {
+        Debug.Log("GiroGhostOff");
         //mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 1);
         GetComponent<MeshRenderer>().material = mat;
-        foiceee.GetComponent<MeshRenderer>().material = mat;
+        //foiceee.GetComponent<MeshRenderer>().material = mat;
+        
+        foiceee.GetComponent<MeshRenderer>().materials = novosMats;
         cabo.GetComponent<MeshRenderer>().material = mat;
         //GetComponentInChildren<MeshRenderer>().material = mat;
 
@@ -341,7 +354,7 @@ public class Character : MonoBehaviour
     {
         repelimento = true;
         direction = -direction;
-        foice.transform.Rotate(0, 0, 180);
+        //foice.transform.Rotate(0, 0, 180);
         right = !right;
     }
     public void ColisaoParede(Vector3 dir)
@@ -349,7 +362,7 @@ public class Character : MonoBehaviour
         if (nPlayer == 1)
         {
             direction = new Vector3(direction.x * dir.x, 0, direction.z * dir.z);
-            foice.transform.Rotate(0, 0, 180);
+            //foice.transform.Rotate(0, 0, 180);
             right = !right;
             paredeCol = true;
             if (manager.rede)
@@ -413,7 +426,7 @@ public class Character : MonoBehaviour
         }
         else
         {
-            foice.transform.Rotate(0, 0, 180);
+            //foice.transform.Rotate(0, 0, 180);
             transform.position = girospot.GetComponent<Girospot>().getP2();
         }
         onGirospot = true;
@@ -440,7 +453,7 @@ public class Character : MonoBehaviour
         }
         else
         {
-            foice.transform.Rotate(0, 0, 180);
+            //foice.transform.Rotate(0, 0, 180);
             transform.position = girospot.GetComponent<Girospot>().getP2();
         }
         onGirospot = true;
@@ -473,7 +486,7 @@ public class Character : MonoBehaviour
     {
         //Debug.Log(other.gameObject.name);
 
-        if (other.gameObject.tag == "Girospot")
+        if (other.gameObject.tag == "Girospot" && !onGirospot)
         {
             girospot = other.gameObject;
             if (!girospot.GetComponent<Girospot>().inativo)
@@ -529,8 +542,9 @@ public class Character : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Girospot")
+        if (other.gameObject.tag == "Girospot" && !onGirospot)
         {
+
             girospot = null;
             colliding = false;
             if (nPlayer == 1)

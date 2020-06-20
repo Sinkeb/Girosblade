@@ -56,4 +56,18 @@ public class CharCollider : MonoBehaviour
             }
         }
     }
+    void OnTriggerStay(Collider other)
+    {
+        /*if (pers.paredeCol)
+        {
+            if (other.gameObject.tag == "Paredex")
+            {
+                pers.ColisaoParede(new Vector3(-1, 1, 1));
+            }
+            if (other.gameObject.tag == "Parede")
+            {
+                pers.ColisaoParede(new Vector3(1, 1, -1));
+            }
+        }*/
+    }
 }

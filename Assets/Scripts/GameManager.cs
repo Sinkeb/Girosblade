@@ -432,10 +432,14 @@ public class GameManager : MonoBehaviour
 
     public void MainMenu()
     {
-        if (meuID == 2)
+        /*if (meuID == 2)
         {
             NetworkTransport.RemoveHost(hostId);
-        }
+        }*/
+        NetworkTransport.RemoveHost(hostId);
+
+        GlobalClass.broadcast = false;
+        GlobalClass.nn = 1;
         SceneManager.LoadScene(0);
     }
     

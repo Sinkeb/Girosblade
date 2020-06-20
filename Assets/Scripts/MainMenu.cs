@@ -7,7 +7,7 @@ using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject mainPage, multiPage;
+    public GameObject mainPage, multiPage, arenasPage;
     public Toggle broad;
     public GameObject ipInput;
     public TMP_InputField floorSkin;
@@ -47,10 +47,20 @@ public class MainMenu : MonoBehaviour
         multiPage.SetActive(false);
         mainPage.SetActive(true);
     }
+    public void ArenaPage()
+    {
+        multiPage.SetActive(false);
+        arenasPage.SetActive(true);
+    }
+    public void ArenaToMultiPage()
+    {
+        arenasPage.SetActive(false);
+        multiPage.SetActive(true);
+    }
     public void CriarJogo()
     {
-        GlobalClass.floorSkin = int.Parse(floorSkin.text);
-        GlobalClass.girospotSkin = int.Parse(girospotSkin.text);
+        //GlobalClass.floorSkin = int.Parse(floorSkin.text);
+        //GlobalClass.girospotSkin = int.Parse(girospotSkin.text);
         if (broad.isOn)
         {
             GlobalClass.broadcast = true;
@@ -67,8 +77,8 @@ public class MainMenu : MonoBehaviour
     }
     public void EntrarJogo()
     {
-        GlobalClass.floorSkin = int.Parse(floorSkin.text);
-        GlobalClass.girospotSkin = int.Parse(girospotSkin.text);
+        //GlobalClass.floorSkin = int.Parse(floorSkin.text);
+        //GlobalClass.girospotSkin = int.Parse(girospotSkin.text);
         if (broad.isOn)
         {
             GlobalClass.broadcast = true;

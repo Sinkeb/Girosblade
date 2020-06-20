@@ -8,11 +8,11 @@ public class FoiceCollider : MonoBehaviour
 
     public void DesativarCollider()
     {
-        GetComponent<BoxCollider>().enabled = false;
+        GetComponent<MeshCollider>().enabled = false;
     }
     public void AtivarCollider()
     {
-        GetComponent<BoxCollider>().enabled = true;
+        GetComponent<MeshCollider>().enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)
