@@ -14,6 +14,8 @@ public class TileLayer
 
     int girospotCount = 0;
 
+    int[][] girospotM;
+
 
     public TileLayer(int x, int y, string name, int type)
     {
@@ -43,18 +45,7 @@ public class TileLayer
 
     public void CreateGirospotMap(int x, int y, int type)
     {
-        int[][] girospotM = new int[][]
-           {
-            new int[] { 0,0,0,0,0,0,0,0 },
-            new int[] { 0,0,1,0,0,0,1,0 },
-            new int[] { 0,0,0,0,1,0,0,0 },
-            new int[] { 0,0,1,0,0,0,1,0 },
-            new int[] { 0,1,0,0,0,0,0,0 },
-            new int[] { 0,0,0,0,1,0,0,0 },
-            new int[] { 0,1,0,0,0,0,0,0 },
-            new int[] { 0,0,0,0,0,0,0,0 },
-            new int[] { 0,0,0,0,0,0,0,0 },
-           };
+        setArena();
 
         layer = new Tile[x][];
 
@@ -100,5 +91,54 @@ public class TileLayer
     public int getGirospotCount()
     {
         return girospotCount;
+    }
+
+    public void setArena()
+    {
+        switch (GlobalClass.HostArena)
+        {
+            case 0:
+                girospotM = new int[][]
+                {
+            new int[] { 0,0,0,0,0,0,0,0 },
+            new int[] { 0,0,1,0,0,0,1,0 },
+            new int[] { 0,0,0,0,1,0,0,0 },
+            new int[] { 0,0,1,0,0,0,1,0 },
+            new int[] { 0,1,0,0,0,0,0,0 },
+            new int[] { 0,0,0,0,1,0,0,0 },
+            new int[] { 0,1,0,0,0,0,0,0 },
+            new int[] { 0,0,0,0,0,0,0,0 },
+            new int[] { 0,0,0,0,0,0,0,0 },
+                };
+                break;
+            case 1:
+                girospotM = new int[][]
+                {
+            new int[] { 0,0,0,0,0,0,0,0 },
+            new int[] { 0,1,0,0,0,0,1,0 },
+            new int[] { 0,0,0,0,0,0,0,0 },
+            new int[] { 0,0,1,0,0,1,0,0 },
+            new int[] { 0,0,0,0,0,0,0,0 },
+            new int[] { 0,0,1,0,0,1,0,0 },
+            new int[] { 0,0,0,0,0,0,0,0 },
+            new int[] { 0,1,0,0,0,0,1,0 },
+            new int[] { 0,0,0,0,0,0,0,0 },
+                };
+                break;
+            case 2:
+                girospotM = new int[][]
+                {
+            new int[] { 0,0,0,0,0,0,0,0 },
+            new int[] { 0,0,0,0,0,0,0,0 },
+            new int[] { 0,0,0,0,0,0,1,0 },
+            new int[] { 0,0,0,0,0,0,1,0 },
+            new int[] { 0,0,0,1,0,0,0,0 },
+            new int[] { 0,0,0,0,1,0,0,0 },
+            new int[] { 0,0,0,0,0,1,0,0 },
+            new int[] { 0,0,0,0,0,0,0,0 },
+            new int[] { 0,0,0,0,0,0,0,0 },
+                };
+                break;
+        }
     }
 }

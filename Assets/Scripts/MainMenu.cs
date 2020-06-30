@@ -13,6 +13,8 @@ public class MainMenu : MonoBehaviour
     public TMP_InputField floorSkin;
     public TMP_InputField girospotSkin;
     public GameObject botConect;
+    public Sprite[] arenaS;
+    public Image arenaI;
 
     //public void StartButton()
     //{
@@ -90,7 +92,7 @@ public class MainMenu : MonoBehaviour
             ipInput.SetActive(!ipInput.activeSelf);
             botConect.SetActive(!botConect.activeSelf);
         }
-            
+
     }
     public void BotaoEntrar()
     {
@@ -102,5 +104,24 @@ public class MainMenu : MonoBehaviour
         GlobalClass.ipAdress = ipInput.GetComponent<TMP_InputField>().text;
         Debug.Log(GlobalClass.ipAdress);
         SceneManager.LoadScene(2);
+    }
+
+    public void ChangeArena(bool side)
+    {
+        if (side)
+        {
+            if (GlobalClass.HostArena < 2)
+                GlobalClass.HostArena++;
+            else
+                GlobalClass.HostArena = 0;
+        }
+        else
+        {
+            if (GlobalClass.HostArena > 0)
+                GlobalClass.HostArena--;
+            else
+                GlobalClass.HostArena = 2;
+        }
+        arenaI.sprite = arenaS[GlobalClass.HostArena];
     }
 }

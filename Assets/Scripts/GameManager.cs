@@ -100,9 +100,7 @@ public class GameManager : MonoBehaviour
                 player2.GetComponent<Character>().nPlayer = 1;
                 player2.GetComponent<Character>().setMaterials(meuID);
 
-                player1.transform.position = arenas[GlobalClass.HostArena].P1.transform.position;
-                player2.transform.position = arenas[GlobalClass.HostArena].P2.transform.position;
-                cam.transform.position = new Vector3(arenas[GlobalClass.HostArena].x, cam.transform.position.y, arenas[GlobalClass.HostArena].z);
+                SetArena();
 
                 //player2.GetComponent<Character>().setMaterial(2);
                 //player1.GetComponent<Character>().setMaterial(1);
@@ -204,7 +202,7 @@ public class GameManager : MonoBehaviour
                 case NetworkEventType.ConnectEvent:
                         if(meuID == 2)
                         {
-                            EnviarPlayer("Conectou|" + connectionId, connectionId, reliableChannel);
+                            EnviarPlayer("Conectou|" + connectionId + "|" + GlobalClass.HostArena, connectionId, reliableChannel);
                             Debug.Log("Conexao com : " + connectionId);
                             NetworkTransport.StopBroadcastDiscovery();
                             p1text.color = Color.green;
@@ -230,6 +228,7 @@ public class GameManager : MonoBehaviour
                                 break;*/
                         case "Conectou":
                                 meuID = int.Parse(sepEnvio[1]);
+                                GlobalClass.HostArena = int.Parse(sepEnvio[2]);
                                 numP.text ="Player " + meuID.ToString();
                                 if (meuID == 1)
                                 {
@@ -238,9 +237,7 @@ public class GameManager : MonoBehaviour
                                     player2.GetComponent<Character>().nPlayer = 2;
                                     player2.GetComponent<Character>().setMaterials(meuID);
 
-                                    player1.transform.position = arenas[GlobalClass.HostArena].P1.transform.position;
-                                    player2.transform.position = arenas[GlobalClass.HostArena].P2.transform.position;
-                                    cam.transform.position = new Vector3(arenas[GlobalClass.HostArena].x, cam.transform.position.y, arenas[GlobalClass.HostArena].z);
+                                    SetArena();
                                     //player2.GetComponent<Character>().setMaterial(2);
                                     //player1.GetComponent<Character>().setMaterial(1);
                                     p1text.text = "Eu";
@@ -657,5 +654,16 @@ public class GameManager : MonoBehaviour
         char[] chars = new char[bytes.Length / sizeof(char)];
         System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
         return new string(chars);
+    }
+
+    public void SetArena()
+    {
+        if (GlobalClass.HostArena != 0)
+        {
+            Vector3 temp = arenas[GlobalClass.HostArena].myArena.transform.position;
+            arenas[GlobalClass.HostArena].myArena.transform.position = arenas[0].myArena.transform.position;
+            arenas[0].myArena.transform.position = temp;
+        }
+
     }
 }
