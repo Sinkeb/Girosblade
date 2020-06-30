@@ -173,6 +173,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10788}
     - Class: 114
+      Script: {instanceID: 10860}
+    - Class: 114
       Script: {instanceID: 11030}
     - Class: 114
       Script: {instanceID: 11154}
@@ -516,7 +518,7 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
-      Hash: 88829f2b72a658f543f1d78ffe30e7ab
+      Hash: d4e3c393f04c7a856a368b06cc5aa844
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager

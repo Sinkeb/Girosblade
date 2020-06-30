@@ -92,30 +92,55 @@ public class Character : MonoBehaviour
             foiceee.GetComponent<MeshRenderer>().material = mat;
             cabo.GetComponent<MeshRenderer>().material = mat;
         }*/
-        novosMats = new Material[2];
+       /* novosMats = new Material[2];
         novosMats[0] = mat;
         novosMats[1] = mat;
         novosMatsGhost = new Material[2];
         novosMatsGhost[0] = matGhost;
-        novosMatsGhost[1] = matGhost;
+        novosMatsGhost[1] = matGhost;*/
     }
-    /*public void setMaterial(int iii)
+    public void setMaterials(int id)
     {
-        if(iii == 1)
+        //passar materiais da customização;
+        if(id == 2)
         {
-            GetComponent<MeshRenderer>().material = mat;
-            foiceee.GetComponent<MeshRenderer>().material = mat;
-            cabo.GetComponent<MeshRenderer>().material = mat;
+            if (nPlayer == 1)
+            {
+                novosMats = new Material[2];
+                novosMats[0] = m2;
+                novosMats[1] = m2;
+            }
+            else
+            {
+                novosMats = new Material[2];
+                novosMats[0] = mat;
+                novosMats[1] = mat;
+            }
         }
         else
         {
-            GetComponent<MeshRenderer>().material = m2;
-            foiceee.GetComponent<MeshRenderer>().material = m2;
-            cabo.GetComponent<MeshRenderer>().material = m2;
-            //GetComponentInChildren<MeshRenderer>().material = mat;
-            mat = m2;
+            if (nPlayer == 2)
+            {
+                novosMats = new Material[2];
+                novosMats[0] = m2;
+                novosMats[1] = m2;
+            }
+            else
+            {
+                novosMats = new Material[2];
+                novosMats[0] = mat;
+                novosMats[1] = mat;
+            }
         }
-    }*/
+        
+        novosMatsGhost = new Material[2];
+        novosMatsGhost[0] = matGhost;
+        novosMatsGhost[1] = matGhost;
+    
+        foiceee.GetComponent<MeshRenderer>().materials = novosMats;
+        GetComponent<MeshRenderer>().material = novosMats[0];
+        cabo.GetComponent<MeshRenderer>().material = novosMats[0];
+    }
     void Update()
     {
         if (!manager.comecou && manager.preparados)
@@ -335,11 +360,11 @@ public class Character : MonoBehaviour
     {
         Debug.Log("GiroGhostOff");
         //mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 1);
-        GetComponent<MeshRenderer>().material = mat;
+        GetComponent<MeshRenderer>().material = novosMats[0];
         //foiceee.GetComponent<MeshRenderer>().material = mat;
         
         foiceee.GetComponent<MeshRenderer>().materials = novosMats;
-        cabo.GetComponent<MeshRenderer>().material = mat;
+        cabo.GetComponent<MeshRenderer>().material = novosMats[0];
         //GetComponentInChildren<MeshRenderer>().material = mat;
 
         ghost = false;

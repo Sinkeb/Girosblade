@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour
     bool isHost = false;
     bool isClient = false;
 
+    public Arena[] arenas;
+    public GameObject cam;
     void Start()
     {
         Application.targetFrameRate = 60;
@@ -94,7 +96,14 @@ public class GameManager : MonoBehaviour
                 p2text.text = "Eu";
                 p2text.color = Color.green;
                 player1.GetComponent<Character>().nPlayer = 2;
+                player1.GetComponent<Character>().setMaterials(meuID);
                 player2.GetComponent<Character>().nPlayer = 1;
+                player2.GetComponent<Character>().setMaterials(meuID);
+
+                player1.transform.position = arenas[GlobalClass.HostArena].P1.transform.position;
+                player2.transform.position = arenas[GlobalClass.HostArena].P2.transform.position;
+                cam.transform.position = new Vector3(arenas[GlobalClass.HostArena].x, cam.transform.position.y, arenas[GlobalClass.HostArena].z);
+
                 //player2.GetComponent<Character>().setMaterial(2);
                 //player1.GetComponent<Character>().setMaterial(1);
                 numP.text = "Player " + meuID.ToString();
@@ -225,7 +234,13 @@ public class GameManager : MonoBehaviour
                                 if (meuID == 1)
                                 {
                                     player1.GetComponent<Character>().nPlayer = 1;
+                                    player1.GetComponent<Character>().setMaterials(meuID);
                                     player2.GetComponent<Character>().nPlayer = 2;
+                                    player2.GetComponent<Character>().setMaterials(meuID);
+
+                                    player1.transform.position = arenas[GlobalClass.HostArena].P1.transform.position;
+                                    player2.transform.position = arenas[GlobalClass.HostArena].P2.transform.position;
+                                    cam.transform.position = new Vector3(arenas[GlobalClass.HostArena].x, cam.transform.position.y, arenas[GlobalClass.HostArena].z);
                                     //player2.GetComponent<Character>().setMaterial(2);
                                     //player1.GetComponent<Character>().setMaterial(1);
                                     p1text.text = "Eu";
