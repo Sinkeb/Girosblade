@@ -55,7 +55,7 @@ public class Character : MonoBehaviour
     public int nPlayer = 1;
     GameManager manager;
     Material[] novosMats, novosMatsGhost;
-
+    Skin minhaSkin;
 
     //REDE
     /*int hostId;
@@ -99,22 +99,23 @@ public class Character : MonoBehaviour
         novosMatsGhost[0] = matGhost;
         novosMatsGhost[1] = matGhost;*/
     }
-    public void setMaterials(int id)
+    public void setMaterials(int id, Skin skin)
     {
         //passar materiais da customização;
+        minhaSkin = skin;
         if(id == 2)
         {
             if (nPlayer == 1)
             {
                 novosMats = new Material[2];
-                novosMats[0] = m2;
-                novosMats[1] = m2;
+                novosMats[0] = skin.foice;
+                novosMats[1] = skin.foice;
             }
             else
             {
                 novosMats = new Material[2];
-                novosMats[0] = mat;
-                novosMats[1] = mat;
+                novosMats[0] = skin.foice;
+                novosMats[1] = skin.foice;
             }
         }
         else
@@ -122,24 +123,24 @@ public class Character : MonoBehaviour
             if (nPlayer == 2)
             {
                 novosMats = new Material[2];
-                novosMats[0] = m2;
-                novosMats[1] = m2;
+                novosMats[0] = skin.foice;
+                novosMats[1] = skin.foice;
             }
             else
             {
                 novosMats = new Material[2];
-                novosMats[0] = mat;
-                novosMats[1] = mat;
+                novosMats[0] = skin.foice;
+                novosMats[1] = skin.foice;
             }
         }
         
         novosMatsGhost = new Material[2];
         novosMatsGhost[0] = matGhost;
         novosMatsGhost[1] = matGhost;
-    
+
         foiceee.GetComponent<MeshRenderer>().materials = novosMats;
-        GetComponent<MeshRenderer>().material = novosMats[0];
-        cabo.GetComponent<MeshRenderer>().material = novosMats[0];
+        GetComponent<MeshRenderer>().material = minhaSkin.player;
+        cabo.GetComponent<MeshRenderer>().material = minhaSkin.cabo;
     }
     void Update()
     {
@@ -360,11 +361,11 @@ public class Character : MonoBehaviour
     {
         Debug.Log("GiroGhostOff");
         //mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 1);
-        GetComponent<MeshRenderer>().material = novosMats[0];
+        GetComponent<MeshRenderer>().material = minhaSkin.player;
         //foiceee.GetComponent<MeshRenderer>().material = mat;
         
         foiceee.GetComponent<MeshRenderer>().materials = novosMats;
-        cabo.GetComponent<MeshRenderer>().material = novosMats[0];
+        cabo.GetComponent<MeshRenderer>().material = minhaSkin.cabo;
         //GetComponentInChildren<MeshRenderer>().material = mat;
 
         ghost = false;

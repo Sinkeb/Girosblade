@@ -269,8 +269,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Aperte Espaco
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5cc4e9497f25df34299d68abfe162270, type: 2}
@@ -574,11 +572,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 6589021624455052009, guid: 2a2a260b27cdf63429543c4b64e94785,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6589021624455052013, guid: 2a2a260b27cdf63429543c4b64e94785,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -717,8 +710,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
   m_PreserveAspect: 1
@@ -831,8 +822,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 0.0.0.0.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5cc4e9497f25df34299d68abfe162270, type: 2}
@@ -1008,8 +997,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Player 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ecc7371391375164782ca7e6f1e0b95d, type: 2}
@@ -1262,8 +1249,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 3848bcfad32107a42bb0422bf429326a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -1318,8 +1303,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Player 0 Ganhou!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5cc4e9497f25df34299d68abfe162270, type: 2}
@@ -1495,8 +1478,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Fim de jogo
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5cc4e9497f25df34299d68abfe162270, type: 2}
@@ -1659,8 +1640,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 3848bcfad32107a42bb0422bf429326a, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
@@ -2261,8 +2240,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
   m_PreserveAspect: 1
@@ -3056,8 +3033,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &1116828014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3076,8 +3051,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 2530564911472380330, guid: b3e1ba8af89d1924e93cc8f8fdb561ad,
     type: 3}
   m_Type: 0
@@ -3244,8 +3217,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 363df09f413bb3049b659ec28ed80adc, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
@@ -3602,8 +3573,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Player 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ecc7371391375164782ca7e6f1e0b95d, type: 2}
@@ -3874,8 +3843,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Player 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5cc4e9497f25df34299d68abfe162270, type: 2}
@@ -4590,8 +4557,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Menu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5cc4e9497f25df34299d68abfe162270, type: 2}
@@ -4951,8 +4916,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Tempo
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5cc4e9497f25df34299d68abfe162270, type: 2}
@@ -5102,8 +5065,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_spriteAsset: {fileID: 0}
   m_material: {fileID: 0}
@@ -5176,8 +5137,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 363df09f413bb3049b659ec28ed80adc, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
@@ -5251,8 +5210,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: ''''
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5cc4e9497f25df34299d68abfe162270, type: 2}
@@ -5570,6 +5527,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
         type: 3}
+      propertyPath: materials.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
+        type: 3}
       propertyPath: numP
       value: 
       objectReference: {fileID: 1446399028}
@@ -5683,6 +5645,51 @@ PrefabInstance:
       propertyPath: arenas.Array.data[2].myArena
       value: 
       objectReference: {fileID: 733815688}
+    - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
+        type: 3}
+      propertyPath: materials.Array.data[0].player
+      value: 
+      objectReference: {fileID: 2100000, guid: 1fdf82d4ff50b904b8cedc068e87527e, type: 2}
+    - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
+        type: 3}
+      propertyPath: materials.Array.data[0].cabo
+      value: 
+      objectReference: {fileID: 2100000, guid: 30c13b4aa05a637419db41b52f99a33a, type: 2}
+    - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
+        type: 3}
+      propertyPath: materials.Array.data[0].foice
+      value: 
+      objectReference: {fileID: 2100000, guid: 30c13b4aa05a637419db41b52f99a33a, type: 2}
+    - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
+        type: 3}
+      propertyPath: materials.Array.data[1].player
+      value: 
+      objectReference: {fileID: 2100000, guid: d1a5866ba29071540a3b370f89c04fc0, type: 2}
+    - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
+        type: 3}
+      propertyPath: materials.Array.data[2].player
+      value: 
+      objectReference: {fileID: 2100000, guid: a5742228b9206094ab720657f43f8e0e, type: 2}
+    - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
+        type: 3}
+      propertyPath: materials.Array.data[1].cabo
+      value: 
+      objectReference: {fileID: 2100000, guid: 1be5276be9cea5345b7691148beb7f47, type: 2}
+    - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
+        type: 3}
+      propertyPath: materials.Array.data[1].foice
+      value: 
+      objectReference: {fileID: 2100000, guid: 1be5276be9cea5345b7691148beb7f47, type: 2}
+    - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
+        type: 3}
+      propertyPath: materials.Array.data[2].cabo
+      value: 
+      objectReference: {fileID: 2100000, guid: e4c992082393d2842bd776d011c5ea9e, type: 2}
+    - target: {fileID: 1375571233304584960, guid: a3a7917066a0c1745b6e135b17d763e1,
+        type: 3}
+      propertyPath: materials.Array.data[2].foice
+      value: 
+      objectReference: {fileID: 2100000, guid: e4c992082393d2842bd776d011c5ea9e, type: 2}
     - target: {fileID: 1375571233304584961, guid: a3a7917066a0c1745b6e135b17d763e1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5751,11 +5758,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6589021624455052009, guid: 2a2a260b27cdf63429543c4b64e94785,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6589021624455052013, guid: 2a2a260b27cdf63429543c4b64e94785,
         type: 3}

@@ -9,5 +9,6 @@ public static class GlobalClass
     public static string ipAdress = "0.0.0.0";
     public static int floorSkin = 0;
     public static int girospotSkin = 0;
-    public static int HostArena = 2;
+    public static int HostArena = 0;
+    public static int pSkin = 0;
 }

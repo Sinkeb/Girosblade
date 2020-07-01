@@ -15,7 +15,9 @@ public class MainMenu : MonoBehaviour
     public GameObject botConect;
     public Sprite[] arenaS;
     public Image arenaI;
-
+    public Sprite[] skins;
+    public Image skinAtual;
+    public int skinA = 0;
     //public void StartButton()
     //{
     //    SceneManager.LoadScene(1);
@@ -123,5 +125,32 @@ public class MainMenu : MonoBehaviour
                 GlobalClass.HostArena = 2;
         }
         arenaI.sprite = arenaS[GlobalClass.HostArena];
+    }
+    public void ChangeSkin(bool side)
+    {
+        if (side)
+        {
+            if(skinA < skins.Length - 1)
+            {
+                skinA++;
+            }
+            else
+            {
+                skinA = 0;
+            }
+        }
+        else
+        {
+            if(skinA > 0)
+            {
+                skinA--;
+            }
+            else
+            {
+                skinA = skins.Length - 1;
+            }
+        }
+        skinAtual.sprite = skins[skinA];
+        GlobalClass.pSkin = skinA;
     }
 }

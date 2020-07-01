@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
     bool isHost = false;
     bool isClient = false;
 
+    public Skin[] materials;
     public Arena[] arenas;
     public GameObject cam;
     void Start()
@@ -96,9 +97,9 @@ public class GameManager : MonoBehaviour
                 p2text.text = "Eu";
                 p2text.color = Color.green;
                 player1.GetComponent<Character>().nPlayer = 2;
-                player1.GetComponent<Character>().setMaterials(meuID);
+                player1.GetComponent<Character>().setMaterials(meuID, materials[GlobalClass.pSkin]);
                 player2.GetComponent<Character>().nPlayer = 1;
-                player2.GetComponent<Character>().setMaterials(meuID);
+                player2.GetComponent<Character>().setMaterials(meuID, materials[2]);
 
                 SetArena();
 
@@ -233,9 +234,9 @@ public class GameManager : MonoBehaviour
                                 if (meuID == 1)
                                 {
                                     player1.GetComponent<Character>().nPlayer = 1;
-                                    player1.GetComponent<Character>().setMaterials(meuID);
+                                    player1.GetComponent<Character>().setMaterials(meuID, materials[GlobalClass.pSkin]);
                                     player2.GetComponent<Character>().nPlayer = 2;
-                                    player2.GetComponent<Character>().setMaterials(meuID);
+                                    player2.GetComponent<Character>().setMaterials(meuID, materials[0]);
 
                                     SetArena();
                                     //player2.GetComponent<Character>().setMaterial(2);
