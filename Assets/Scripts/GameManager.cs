@@ -60,6 +60,10 @@ public class GameManager : MonoBehaviour
     public Skin[] materials;
     public Arena[] arenas;
     public GameObject cam;
+
+    float dist;
+    bool slow = false;
+    bool camFollow = false;
     void Start()
     {
         Application.targetFrameRate = 60;
@@ -97,9 +101,9 @@ public class GameManager : MonoBehaviour
                 p2text.text = "Eu";
                 p2text.color = Color.green;
                 player1.GetComponent<Character>().nPlayer = 2;
-                player1.GetComponent<Character>().setMaterials(meuID, materials[GlobalClass.pSkin]);
+                player1.GetComponent<Character>().setMaterials(meuID, materials[0]);
                 player2.GetComponent<Character>().nPlayer = 1;
-                player2.GetComponent<Character>().setMaterials(meuID, materials[2]);
+                player2.GetComponent<Character>().setMaterials(meuID, materials[GlobalClass.pSkin]);
 
                 SetArena();
 
@@ -203,7 +207,7 @@ public class GameManager : MonoBehaviour
                 case NetworkEventType.ConnectEvent:
                         if(meuID == 2)
                         {
-                            EnviarPlayer("Conectou|" + connectionId + "|" + GlobalClass.HostArena, connectionId, reliableChannel);
+                            EnviarPlayer("Conectou|" + connectionId + "|" + GlobalClass.HostArena + "|" + GlobalClass.pSkin, connectionId, reliableChannel);
                             Debug.Log("Conexao com : " + connectionId);
                             NetworkTransport.StopBroadcastDiscovery();
                             p1text.color = Color.green;
@@ -214,6 +218,7 @@ public class GameManager : MonoBehaviour
                             Debug.Log("me conectei com id: " + connectionId);
                             p2text.color = Color.green;
                             preparados = true;
+                            Enviar("SkinCliente|" + GlobalClass.pSkin, reliableChannel);
                         }
                         goto case NetworkEventType.Nothing;
                     case NetworkEventType.DataEvent:
@@ -236,7 +241,7 @@ public class GameManager : MonoBehaviour
                                     player1.GetComponent<Character>().nPlayer = 1;
                                     player1.GetComponent<Character>().setMaterials(meuID, materials[GlobalClass.pSkin]);
                                     player2.GetComponent<Character>().nPlayer = 2;
-                                    player2.GetComponent<Character>().setMaterials(meuID, materials[0]);
+                                    player2.GetComponent<Character>().setMaterials(meuID, materials[int.Parse(sepEnvio[3])]);
 
                                     SetArena();
                                     //player2.GetComponent<Character>().setMaterial(2);
@@ -246,6 +251,13 @@ public class GameManager : MonoBehaviour
                                     p2text.text = "Inimigo";
                                 }
                             break;
+                            case "SkinCliente":
+                                if(meuID == 2)//só o host recebe
+                                {
+                                    Debug.Log("recebi_Skin_do_Cliente " + sepEnvio[1]);
+                                    player1.GetComponent<Character>().setMaterials(meuID, materials[int.Parse(sepEnvio[1])]);
+                                }
+                                break;
                         case "Direcao":
                             float x, y, z;
                             x = float.Parse(sepEnvio[2]);
@@ -342,6 +354,7 @@ public class GameManager : MonoBehaviour
                                 break;
                             case "Terminou":
                                 terminarPartida(int.Parse(sepEnvio[1]));
+                                player1.GetComponent<Character>().GiroFast();
                                 break;
 
                         }
@@ -361,7 +374,57 @@ public class GameManager : MonoBehaviour
             } while (recData != NetworkEventType.Nothing);
             
         }
-        if(player1Ready && player2Ready && rede && !jogando)
+        if(jogando)
+        {
+            if (slow)
+            {
+                if(meuID == 2)
+                {
+                    cam.GetComponent<CameraController>().setPosition(player2.transform.position);
+                }
+                else
+                {
+                    cam.GetComponent<CameraController>().setPosition(player1.transform.position);
+                }
+            }
+            dist = Vector3.Distance(player1.transform.position, player2.transform.position);
+            if (dist < 4 && !slow)
+            {
+                //Debug.Log("Distancia: " + dist);
+                if(!player2.GetComponent<Character>().ghost && !player1.GetComponent<Character>().ghost)
+                {
+                    if (meuID == 2 && !player2.GetComponent<Character>().onGirospot)//host
+                    {
+                        player2.GetComponent<Character>().GiroSlow();
+                        cam.GetComponent<CameraController>().setPosition(player2.transform.position);
+                    }
+                    else if (meuID == 1 && !player1.GetComponent<Character>().onGirospot)//cliente
+                    {
+                        player1.GetComponent<Character>().GiroSlow();
+                        cam.GetComponent<CameraController>().setPosition(player1.transform.position);
+                    }
+                    slow = true;
+                }
+            }
+            else if (dist > 4 && slow)
+            {
+                if (meuID == 2)//host
+                {
+                    player2.GetComponent<Character>().GiroFast();
+                    cam.GetComponent<CameraController>().resetPosition();
+                }
+                else//cliente
+                {
+                    player1.GetComponent<Character>().GiroFast();
+                    cam.GetComponent<CameraController>().resetPosition();
+                }
+                slow = false;
+            }
+
+        }
+
+
+        if (player1Ready && player2Ready && rede && !jogando)
         {
             ComecarPartida();
         }
@@ -566,9 +629,11 @@ public class GameManager : MonoBehaviour
     }
     public void terminarPartida(int nn)
     {
+
         if(meuID == 2)
         {
             EnviarPlayer("Terminou|" + nn, 1, reliableChannel);
+            player2.GetComponent<Character>().GiroFast();
         }
         if(meuID == 1)
         {

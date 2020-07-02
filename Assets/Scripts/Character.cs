@@ -57,6 +57,8 @@ public class Character : MonoBehaviour
     Material[] novosMats, novosMatsGhost;
     Skin minhaSkin;
 
+    float timeFull;
+
     //REDE
     /*int hostId;
     private int reliableChannel;
@@ -65,6 +67,9 @@ public class Character : MonoBehaviour
 
     void Start()
     {
+        timeFull = Time.fixedDeltaTime;
+        Debug.Log("delta: " + Time.fixedDeltaTime);
+        Debug.Log("var: " + timeFull);
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         rotate = 90;
         colliding = false;
@@ -508,9 +513,23 @@ public class Character : MonoBehaviour
         onGirospot = false;
         girospot = null;
     }
+    public void GiroSlow()
+    {
+        Time.timeScale = 0.2f;
+        Time.fixedDeltaTime = timeFull * 0.2f;
+    }
+    public void GiroFast()
+    {
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = timeFull;
+    }
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log(other.gameObject.name);
+        /*if(other.gameObject.tag == "SlowC" && !onGirospot && nPlayer == 1)
+        {
+            GiroSlow();
+        }*/
 
         if (other.gameObject.tag == "Girospot" && !onGirospot)
         {
@@ -576,7 +595,10 @@ public class Character : MonoBehaviour
             if (nPlayer == 1)
                 other.GetComponent<Girospot>().Outline(false);
         }
-
+        /*if(other.gameObject.tag == "SlowC")
+        {
+            GiroFast();
+        }*/
     }
     //private void OnTriggerEnter(Collision collision)
     //{

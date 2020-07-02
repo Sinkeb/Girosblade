@@ -65,6 +65,7 @@
     <Compile Include="Assets\QuickOutline\Scripts\Outline.cs" />
     <Compile Include="Assets\Scripts\Arena.cs" />
     <Compile Include="Assets\Scripts\CaboCollider.cs" />
+    <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\CharCollider.cs" />
     <Compile Include="Assets\Scripts\FoiceCollider.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Assets\Scripts\MapBuilder.cs" />
     <Compile Include="Assets\Scripts\Server.cs" />
     <Compile Include="Assets\Scripts\Skin.cs" />
+    <Compile Include="Assets\Scripts\SlowCollision.cs" />
     <Compile Include="Assets\Scripts\SpawnLightning.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\TileLayer.cs" />

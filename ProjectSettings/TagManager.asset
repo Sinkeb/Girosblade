@@ -9,6 +9,7 @@ TagManager:
   - Paredex
   - Foice
   - Shield
+  - SlowC
   layers:
   - Default
   - TransparentFX
