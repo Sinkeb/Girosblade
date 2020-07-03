@@ -5,6 +5,7 @@ using UnityEngine;
 public class FoiceCollider : MonoBehaviour
 {
     public Character pers;
+    public GameObject faisca;
 
     public void DesativarCollider()
     {
@@ -40,6 +41,8 @@ public class FoiceCollider : MonoBehaviour
                 Debug.Log("foice na foice");
                 pers.repelimento = true;
                 pers.InverterDirecao();
+                //Instantiate(faisca, other.ClosestPoint(gameObject.transform.position), Quaternion.identity);
+                Instantiate(faisca, gameObject.transform.position, Quaternion.identity);
             }
         }
         /*if (other.gameObject.tag == "Player" && !pers.repelimento)

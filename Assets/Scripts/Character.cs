@@ -425,18 +425,21 @@ public class Character : MonoBehaviour
 
     void ActionKeyGirospot()
     {
-        if (!girospot.GetComponent<Girospot>().inativo)
+        if (girospot != null)
         {
-            rotatingGirospot = !rotatingGirospot;
-            if (rotatingGirospot)
+            if (!girospot.GetComponent<Girospot>().inativo)
             {
-                EntrarGirospot(girospot);
-            }
-            else
-            {
-                //transform.SetParent(null);
-                giroTime = 0f;
-                SairGirospot();
+                rotatingGirospot = !rotatingGirospot;
+                if (rotatingGirospot)
+                {
+                    EntrarGirospot(girospot);
+                }
+                else
+                {
+                    //transform.SetParent(null);
+                    giroTime = 0f;
+                    SairGirospot();
+                }
             }
         }
     }

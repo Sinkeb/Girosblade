@@ -425,6 +425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pers: {fileID: 6589021624455052012}
+  faisca: {fileID: 0}
 --- !u!54 &6589021623830625602
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1166,3 +1167,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pers: {fileID: 6589021624455052012}
+  faisca: {fileID: 180128, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}

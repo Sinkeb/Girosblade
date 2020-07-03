@@ -4921,6 +4921,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f735fab25e150344f829bff9ac3d20c2, type: 3}
   - {fileID: 21300000, guid: 7ed6a7c11b3b72d45887002f29535199, type: 3}
   - {fileID: 21300000, guid: 76c1b271f10d9e4468b7c925cce6fedb, type: 3}
+  - {fileID: 21300000, guid: 747ef68adbeaa524cb55505186ad1d10, type: 3}
+  - {fileID: 21300000, guid: 73d07b8d749d9634ca514adce0d355bf, type: 3}
+  - {fileID: 21300000, guid: 8a9e82f07d4f0704bbd57f298d6be793, type: 3}
   skinAtual: {fileID: 333784289}
   skinA: 0
 --- !u!4 &1142637199

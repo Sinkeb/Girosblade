@@ -28,9 +28,11 @@ public class GameManager : MonoBehaviour
     string minutos;
     string segundos;
     public GameObject endPanel;
+    public Button rematchB;
     public TextMeshProUGUI winner;
 
     public GameObject startPanel;
+    public Image hostSkin, clienteSkin;
     public Image check1, check2;
     public TextMeshProUGUI p1text, p2text;
     public TextMeshProUGUI HostIpText;
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
     float dist;
     bool slow = false;
     bool camFollow = false;
+
     void Start()
     {
         Application.targetFrameRate = 60;
@@ -104,7 +107,8 @@ public class GameManager : MonoBehaviour
                 player1.GetComponent<Character>().setMaterials(meuID, materials[0]);
                 player2.GetComponent<Character>().nPlayer = 1;
                 player2.GetComponent<Character>().setMaterials(meuID, materials[GlobalClass.pSkin]);
-
+                hostSkin.sprite = materials[GlobalClass.pSkin].sprite;
+                hostSkin.enabled = true;
                 SetArena();
 
                 //player2.GetComponent<Character>().setMaterial(2);
@@ -218,6 +222,8 @@ public class GameManager : MonoBehaviour
                             Debug.Log("me conectei com id: " + connectionId);
                             p2text.color = Color.green;
                             preparados = true;
+                            clienteSkin.sprite = materials[GlobalClass.pSkin].sprite;
+                            clienteSkin.enabled = true;
                             Enviar("SkinCliente|" + GlobalClass.pSkin, reliableChannel);
                         }
                         goto case NetworkEventType.Nothing;
@@ -242,7 +248,8 @@ public class GameManager : MonoBehaviour
                                     player1.GetComponent<Character>().setMaterials(meuID, materials[GlobalClass.pSkin]);
                                     player2.GetComponent<Character>().nPlayer = 2;
                                     player2.GetComponent<Character>().setMaterials(meuID, materials[int.Parse(sepEnvio[3])]);
-
+                                    hostSkin.sprite = materials[int.Parse(sepEnvio[3])].sprite;
+                                    hostSkin.enabled = true;
                                     SetArena();
                                     //player2.GetComponent<Character>().setMaterial(2);
                                     //player1.GetComponent<Character>().setMaterial(1);
@@ -256,6 +263,8 @@ public class GameManager : MonoBehaviour
                                 {
                                     Debug.Log("recebi_Skin_do_Cliente " + sepEnvio[1]);
                                     player1.GetComponent<Character>().setMaterials(meuID, materials[int.Parse(sepEnvio[1])]);
+                                    clienteSkin.sprite = materials[int.Parse(sepEnvio[1])].sprite;
+                                    clienteSkin.enabled = true;
                                 }
                                 break;
                         case "Direcao":
@@ -281,11 +290,11 @@ public class GameManager : MonoBehaviour
                                 {
                                     player2Ready = true;
                                     check2.enabled = true;
-                                    //p2text.color = Color.green;
+                                    p2text.color = Color.green;
                                 }
                                 else
                                 {
-                                    //p1text.color = Color.green;
+                                    p1text.color = Color.green;
                                     player1Ready = true;
                                     check1.enabled = true;
                                     //EnviarPlayer("Preparados|", 1, reliableChannel);
@@ -356,6 +365,17 @@ public class GameManager : MonoBehaviour
                                 terminarPartida(int.Parse(sepEnvio[1]));
                                 player1.GetComponent<Character>().GiroFast();
                                 break;
+                            case "Revanche":
+                                if(meuID == 1)
+                                {
+                                    rematchB.interactable = true;
+                                    winner.text = "Revanche?";
+                                }else if(meuID == 2)
+                                {
+                                    //recomecar partida;
+                                    resetGame();
+                                }
+                                break;
 
                         }
                         goto case NetworkEventType.Nothing;
@@ -393,17 +413,21 @@ public class GameManager : MonoBehaviour
                 //Debug.Log("Distancia: " + dist);
                 if(!player2.GetComponent<Character>().ghost && !player1.GetComponent<Character>().ghost)
                 {
-                    if (meuID == 2 && !player2.GetComponent<Character>().onGirospot)//host
+                    if (!player2.GetComponent<Character>().onGirospot && !player1.GetComponent<Character>().onGirospot)
                     {
-                        player2.GetComponent<Character>().GiroSlow();
-                        cam.GetComponent<CameraController>().setPosition(player2.transform.position);
+
+                        if (meuID == 2)//host
+                        {
+                            player2.GetComponent<Character>().GiroSlow();
+                            cam.GetComponent<CameraController>().setPosition(player2.transform.position);
+                        }
+                        else if (meuID == 1)//cliente
+                        {
+                            player1.GetComponent<Character>().GiroSlow();
+                            cam.GetComponent<CameraController>().setPosition(player1.transform.position);
+                        }
+                        slow = true;
                     }
-                    else if (meuID == 1 && !player1.GetComponent<Character>().onGirospot)//cliente
-                    {
-                        player1.GetComponent<Character>().GiroSlow();
-                        cam.GetComponent<CameraController>().setPosition(player1.transform.position);
-                    }
-                    slow = true;
                 }
             }
             else if (dist > 4 && slow)
@@ -518,7 +542,23 @@ public class GameManager : MonoBehaviour
         GlobalClass.nn = 1;
         SceneManager.LoadScene(0);
     }
-    
+    public void RematchButton()
+    {
+        if(meuID == 2)
+        {
+            EnviarPlayer("Revanche|", 1, reliableChannel);
+        }
+        else
+        {
+            Enviar("Revanche|", reliableChannel);
+            resetGame();
+        }
+        Debug.Log("Rematch");
+    }
+    void resetGame()
+    {
+
+    }
     private void Enviar(string mensagem, int channelID)
     {
         //Debug.Log("Enviando: " + mensagem);
@@ -661,6 +701,15 @@ public class GameManager : MonoBehaviour
         }
         
         endPanel.SetActive(true);
+        if(meuID == 2)
+        {
+            rematchB.interactable = true;
+        }
+        else
+        {
+            rematchB.interactable = false;
+
+        }
         jogando = false;
         player1Ready = false;
         player2Ready = false;
