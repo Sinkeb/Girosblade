@@ -6,6 +6,7 @@ public class FoiceCollider : MonoBehaviour
 {
     public Character pers;
     public GameObject faisca;
+    public GameManager manager;
 
     public void DesativarCollider()
     {
@@ -41,8 +42,13 @@ public class FoiceCollider : MonoBehaviour
                 Debug.Log("foice na foice");
                 pers.repelimento = true;
                 pers.InverterDirecao();
-                //Instantiate(faisca, other.ClosestPoint(gameObject.transform.position), Quaternion.identity);
-                Instantiate(faisca, gameObject.transform.position, Quaternion.identity);
+                if (manager.meuID == 2 && pers.nPlayer == 1)
+                {
+                    Instantiate(faisca, other.ClosestPoint(gameObject.transform.position), Quaternion.identity);
+                    //Instantiate(faisca, gameObject.transform.position, Quaternion.identity);
+                    //mandar para o outro inverted dir e instanciar faisca na posicao vec3
+                    manager.EnviarFoiceCol(other.ClosestPoint(gameObject.transform.position));
+                }
             }
         }
         /*if (other.gameObject.tag == "Player" && !pers.repelimento)

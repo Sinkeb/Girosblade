@@ -358,6 +358,14 @@ public class GameManager : MonoBehaviour
                             case "TomouDano":
                                 player1.GetComponent<Character>().GiroGhostOn();
                                 break;
+                            case "FoiceCol":
+                                if(meuID == 1)
+                                {
+                                    //Debug.Log("Recebi FoiceCol");
+                                    //player1.GetComponent<Character>().InverterDirecao();
+                                    player1.GetComponent<Character>().InverterDirFaisca(float.Parse(sepEnvio[1]), float.Parse(sepEnvio[2]), float.Parse(sepEnvio[3]));
+                                }
+                                break;
                             case "CausouDano":
                                 player2.GetComponent<Character>().GiroGhostOn();
                                 break;
@@ -595,7 +603,7 @@ public class GameManager : MonoBehaviour
         int idgiro = getIndiceGirospot(giro);
         if (idgiro != -1)
         {
-            Debug.Log(idgiro + " idGirospot entrei");
+            //Debug.Log(idgiro + " idGirospot entrei");
             string msg = "Egiro|" + meuID + "|" + idgiro + "|" + or;
             if(meuID == 1)
             {
@@ -745,6 +753,11 @@ public class GameManager : MonoBehaviour
         {
             EnviarPlayer(m, 1, unreliableChannel);
         }
+    }
+    public void EnviarFoiceCol(Vector3 faiscaPos)
+    {
+       // Debug.Log("Enviou FoiceCol");
+        EnviarPlayer("FoiceCol|" + faiscaPos.x + "|" + faiscaPos.y + "|" + faiscaPos.z, 1, reliableChannel);
     }
     public void EnviarInverterDirecao()
     {

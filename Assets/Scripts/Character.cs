@@ -58,6 +58,7 @@ public class Character : MonoBehaviour
     Skin minhaSkin;
 
     float timeFull;
+    public GameObject faisca;
 
     //REDE
     /*int hostId;
@@ -328,7 +329,7 @@ public class Character : MonoBehaviour
     }
     public void GiroGhostOn()
     {
-        Debug.Log("GiroGhostOn");
+        //Debug.Log("GiroGhostOn");
         //matt.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.25f);
         GetComponent<MeshRenderer>().material = matGhost;
         
@@ -364,7 +365,7 @@ public class Character : MonoBehaviour
     }
     public void GiroGhostOff()
     {
-        Debug.Log("GiroGhostOff");
+        //Debug.Log("GiroGhostOff");
         //mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 1);
         GetComponent<MeshRenderer>().material = minhaSkin.player;
         //foiceee.GetComponent<MeshRenderer>().material = mat;
@@ -387,6 +388,7 @@ public class Character : MonoBehaviour
         direction = -direction;
         //foice.transform.Rotate(0, 0, 180);
         right = !right;
+        Debug.Log("inverti");
     }
     public void ColisaoParede(Vector3 dir)
     {
@@ -525,6 +527,12 @@ public class Character : MonoBehaviour
     {
         Time.timeScale = 1;
         Time.fixedDeltaTime = timeFull;
+    }
+    public void InverterDirFaisca(float x, float y, float z)
+    {
+        //InverterDirecao();
+        Debug.Log("instantiate");
+        Instantiate(faisca, new Vector3(x,y,z), Quaternion.identity);
     }
     private void OnTriggerEnter(Collider other)
     {

@@ -426,6 +426,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pers: {fileID: 6589021624455052012}
   faisca: {fileID: 0}
+  manager: {fileID: 0}
 --- !u!54 &6589021623830625602
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -761,6 +762,7 @@ MonoBehaviour:
   - {fileID: 6589021622983994097}
   - {fileID: 6589021624669885883}
   nPlayer: 1
+  faisca: {fileID: 180128, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
 --- !u!1 &6589021624669885881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,3 +1170,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pers: {fileID: 6589021624455052012}
   faisca: {fileID: 180128, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  manager: {fileID: 0}
