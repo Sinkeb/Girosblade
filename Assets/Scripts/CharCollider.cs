@@ -27,6 +27,10 @@ public class CharCollider : MonoBehaviour
             {
                 pers.ColisaoParede(new Vector3(1, 1, -1));
             }
+            if(other.gameObject.tag == "ParedeT")
+            {
+                pers.ColisaoParedeT(other.gameObject.transform.right);
+            }
         }
         else if(!pers.GetRedeStat())
         {
@@ -44,7 +48,7 @@ public class CharCollider : MonoBehaviour
     {
         if (pers.nPlayer == 1 && pers.GetRedeStat())
         {
-            if (other.gameObject.tag == "Parede" || other.gameObject.tag == "Paredex")
+            if (other.gameObject.tag == "Parede" || other.gameObject.tag == "Paredex" || other.gameObject.tag == "ParedeT")
             {
                 pers.SaiuParede();
             }

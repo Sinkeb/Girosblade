@@ -763,6 +763,7 @@ MonoBehaviour:
   - {fileID: 6589021624669885883}
   nPlayer: 1
   faisca: {fileID: 180128, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  sangue: {fileID: 180128, guid: 33f13b61335f0454f8d6fbd0b3d05326, type: 3}
 --- !u!1 &6589021624669885881
 GameObject:
   m_ObjectHideFlags: 0

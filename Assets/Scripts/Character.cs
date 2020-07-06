@@ -59,6 +59,7 @@ public class Character : MonoBehaviour
 
     float timeFull;
     public GameObject faisca;
+    public GameObject sangue;
 
     //REDE
     /*int hostId;
@@ -408,6 +409,16 @@ public class Character : MonoBehaviour
         //nPlayer, vec3 direcao,
 
     }
+    public void ColisaoParedeT(Vector3 dir)
+    {
+        if (nPlayer == 1)
+        {
+            direction = new Vector3(dir.x, 0, dir.z);
+            //foice.transform.Rotate(0, 0, 180);
+            right = !right;
+            paredeCol = true;
+        }
+    }
     public void SetPosition(float x, float y, float z)
     {
         transform.position = new Vector3(x, 0, z);
@@ -534,6 +545,10 @@ public class Character : MonoBehaviour
         Debug.Log("instantiate");
         Instantiate(faisca, new Vector3(x,y,z), Quaternion.identity);
     }
+    public void instSangue(float x, float y, float z)
+    {
+        Instantiate(sangue, new Vector3(x, y, z), Quaternion.identity);
+    }
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log(other.gameObject.name);
@@ -562,8 +577,11 @@ public class Character : MonoBehaviour
             Debug.Log("Player no player");
             repelimento = true;
             //impulsionar ao contrario
-            InverterDirecao();
-            manager.EnviarInverterDirecao();
+            if(nPlayer == 1)
+            {
+                InverterDirecao();
+                manager.EnviarInverterDirecao();
+            }
         }
 
         if (other.gameObject.tag == "Foice" && !ghost && !repelimento && manager.meuID == 2)
@@ -578,12 +596,15 @@ public class Character : MonoBehaviour
                 if (nPlayer == 1)
                 {
                     //mandar pro outro que ele me acertou
-                    manager.ClienteMeAcertou();
+                    manager.ClienteMeAcertou(other.ClosestPoint(gameObject.transform.position));
+                    Instantiate(sangue, other.ClosestPoint(gameObject.transform.position), Quaternion.identity);
+                    //manager.EnviarFoiceCol(other.ClosestPoint(gameObject.transform.position));
                 }
                 else
                 {
                     //mandar pro outro que ele tomou dano
-                    manager.ClienteTomouDano();
+                    manager.ClienteTomouDano(other.ClosestPoint(gameObject.transform.position));
+                    Instantiate(sangue, other.ClosestPoint(gameObject.transform.position), Quaternion.identity);
                 }
             }
         }

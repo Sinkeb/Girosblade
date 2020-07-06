@@ -12,7 +12,7 @@ public class MapBuilder : MonoBehaviour
     public GameManager gameManager; 
     void Start()
     {
-        NewLayer();
+        //NewLayer();
     }
     public void NewLayer()
     {

@@ -44,10 +44,10 @@ public class FoiceCollider : MonoBehaviour
                 pers.InverterDirecao();
                 if (manager.meuID == 2 && pers.nPlayer == 1)
                 {
+                    manager.EnviarFoiceCol(other.ClosestPoint(gameObject.transform.position));
                     Instantiate(faisca, other.ClosestPoint(gameObject.transform.position), Quaternion.identity);
                     //Instantiate(faisca, gameObject.transform.position, Quaternion.identity);
                     //mandar para o outro inverted dir e instanciar faisca na posicao vec3
-                    manager.EnviarFoiceCol(other.ClosestPoint(gameObject.transform.position));
                 }
             }
         }

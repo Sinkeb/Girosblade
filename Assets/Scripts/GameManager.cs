@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
     float dist;
     bool slow = false;
     bool camFollow = false;
+    public MapBuilder mapB;
 
     void Start()
     {
@@ -110,6 +111,7 @@ public class GameManager : MonoBehaviour
                 hostSkin.sprite = materials[GlobalClass.pSkin].sprite;
                 hostSkin.enabled = true;
                 SetArena();
+                mapB.NewLayer();
 
                 //player2.GetComponent<Character>().setMaterial(2);
                 //player1.GetComponent<Character>().setMaterial(1);
@@ -241,6 +243,7 @@ public class GameManager : MonoBehaviour
                         case "Conectou":
                                 meuID = int.Parse(sepEnvio[1]);
                                 GlobalClass.HostArena = int.Parse(sepEnvio[2]);
+                                mapB.NewLayer();
                                 numP.text ="Player " + meuID.ToString();
                                 if (meuID == 1)
                                 {
@@ -357,6 +360,7 @@ public class GameManager : MonoBehaviour
                                 break;
                             case "TomouDano":
                                 player1.GetComponent<Character>().GiroGhostOn();
+                                player1.GetComponent<Character>().instSangue(float.Parse(sepEnvio[1]), float.Parse(sepEnvio[2]), float.Parse(sepEnvio[3]));
                                 break;
                             case "FoiceCol":
                                 if(meuID == 1)
@@ -368,6 +372,7 @@ public class GameManager : MonoBehaviour
                                 break;
                             case "CausouDano":
                                 player2.GetComponent<Character>().GiroGhostOn();
+                                player1.GetComponent<Character>().instSangue(float.Parse(sepEnvio[1]), float.Parse(sepEnvio[2]), float.Parse(sepEnvio[3]));
                                 break;
                             case "Terminou":
                                 terminarPartida(int.Parse(sepEnvio[1]));
@@ -658,6 +663,7 @@ public class GameManager : MonoBehaviour
         }
 
         comecou = false;
+        HostIpText.enabled = false;
         Debug.Log("comecou");
     }
     public void Perdi(int nPlayer)
@@ -707,8 +713,9 @@ public class GameManager : MonoBehaviour
                 winner.text = "Venceu! Muito bem";
             }
         }
-        
-        endPanel.SetActive(true);
+
+        //endPanel.SetActive(true);
+        Invoke("endPanelActive", 2.0f);
         if(meuID == 2)
         {
             rematchB.interactable = true;
@@ -721,6 +728,10 @@ public class GameManager : MonoBehaviour
         jogando = false;
         player1Ready = false;
         player2Ready = false;
+    }
+    void endPanelActive()
+    {
+        endPanel.SetActive(true);
     }
     public void EnviarPosicao(float x, float y, float z, Vector3 foiceP, Quaternion foiceR)
     {
@@ -763,13 +774,13 @@ public class GameManager : MonoBehaviour
     {
         EnviarPlayer("InvDir|", 1, reliableChannel);
     }
-    public void ClienteTomouDano()
+    public void ClienteTomouDano(Vector3 pSan)
     {
-        EnviarPlayer("TomouDano|", 1, reliableChannel);
+        EnviarPlayer("TomouDano|" + pSan.x + "|" + pSan.y + "|" + pSan.z, 1, reliableChannel);
     }
-    public void ClienteMeAcertou()
+    public void ClienteMeAcertou(Vector3 pSan)
     {
-        EnviarPlayer("CausouDano|", 1, reliableChannel);
+        EnviarPlayer("CausouDano|"+ pSan.x + "|" + pSan.y + "|" + pSan.z, 1, reliableChannel);
     }
     static byte[] GetBytes(string str)
     {
@@ -792,6 +803,5 @@ public class GameManager : MonoBehaviour
             arenas[GlobalClass.HostArena].myArena.transform.position = arenas[0].myArena.transform.position;
             arenas[0].myArena.transform.position = temp;
         }
-
     }
 }
