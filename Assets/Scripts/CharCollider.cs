@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharCollider : MonoBehaviour
 {
     public Character pers;
+    float timer = 0f;
 
     void Start()
     {
@@ -32,17 +33,6 @@ public class CharCollider : MonoBehaviour
                 pers.ColisaoParedeT(other.gameObject.transform.right);
             }
         }
-        else if(!pers.GetRedeStat())
-        {
-            if (other.gameObject.tag == "Paredex")
-            {
-                pers.ColisaoParede(new Vector3(-1, 1, 1));
-            }
-            if (other.gameObject.tag == "Parede")
-            {
-                pers.ColisaoParede(new Vector3(1, 1, -1));
-            }
-        }
     }
     void OnTriggerExit(Collider other)
     {
@@ -51,18 +41,14 @@ public class CharCollider : MonoBehaviour
             if (other.gameObject.tag == "Parede" || other.gameObject.tag == "Paredex" || other.gameObject.tag == "ParedeT")
             {
                 pers.SaiuParede();
-            }
-        }else if (!pers.GetRedeStat())
-        {
-            if (other.gameObject.tag == "Parede" || other.gameObject.tag == "Paredex")
-            {
-                pers.SaiuParede();
+                timer = 0f;
             }
         }
     }
     void OnTriggerStay(Collider other)
     {
-        /*if (pers.paredeCol)
+        /*timer += Time.deltaTime;
+        if (pers.paredeCol && timer > 0.2f)
         {
             if (other.gameObject.tag == "Paredex")
             {
@@ -72,6 +58,11 @@ public class CharCollider : MonoBehaviour
             {
                 pers.ColisaoParede(new Vector3(1, 1, -1));
             }
+            if (other.gameObject.tag == "ParedeT")
+            {
+                pers.ColisaoParedeT(other.gameObject.transform.right);
+            }
+            timer = 0f;
         }*/
     }
 }

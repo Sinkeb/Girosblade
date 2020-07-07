@@ -7,7 +7,13 @@ public class FoiceCollider : MonoBehaviour
     public Character pers;
     public GameObject faisca;
     public GameManager manager;
+    public AudioClip foiceF, foiceG;
+    AudioSource audioS;
 
+    private void Start()
+    {
+        audioS = GetComponent<AudioSource>();
+    }
     public void DesativarCollider()
     {
         GetComponent<MeshCollider>().enabled = false;
@@ -15,6 +21,10 @@ public class FoiceCollider : MonoBehaviour
     public void AtivarCollider()
     {
         GetComponent<MeshCollider>().enabled = true;
+    }
+    public void playFoiceF() {
+        audioS.clip = foiceF;
+        audioS.Play();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,7 +44,7 @@ public class FoiceCollider : MonoBehaviour
                 pers.colliding = false;
             }
         }
-        if (other.gameObject.tag == "Foice" && !pers.repelimento)
+        if (other.gameObject.tag == "Foice" && manager.meuID == 2 && pers.nPlayer == 1)
         {
             Character ot = other.gameObject.GetComponent<FoiceCollider>().pers;
             if (!ot.ghost && !pers.ghost)
@@ -42,13 +52,14 @@ public class FoiceCollider : MonoBehaviour
                 Debug.Log("foice na foice");
                 pers.repelimento = true;
                 pers.InverterDirecao();
-                if (manager.meuID == 2 && pers.nPlayer == 1)
-                {
-                    manager.EnviarFoiceCol(other.ClosestPoint(gameObject.transform.position));
-                    Instantiate(faisca, other.ClosestPoint(gameObject.transform.position), Quaternion.identity);
-                    //Instantiate(faisca, gameObject.transform.position, Quaternion.identity);
-                    //mandar para o outro inverted dir e instanciar faisca na posicao vec3
-                }
+                //ot.InverterDirecao();
+                audioS.clip = foiceF;
+                audioS.Play();
+                manager.EnviarFoiceCol(other.ClosestPoint(gameObject.transform.position));
+                Instantiate(faisca, other.ClosestPoint(gameObject.transform.position), Quaternion.identity);
+                //Instantiate(faisca, gameObject.transform.position, Quaternion.identity);
+                //mandar para o outro inverted dir e instanciar faisca na posicao vec3
+
             }
         }
         /*if (other.gameObject.tag == "Player" && !pers.repelimento)
@@ -65,6 +76,10 @@ public class FoiceCollider : MonoBehaviour
         {
             pers.repelimento = true;
             pers.InverterDirecao();
+            
+            audioS.clip = foiceG;
+            audioS.Play();
+            
         }
     }
     private void OnTriggerExit(Collider other)

@@ -67,9 +67,11 @@ public class GameManager : MonoBehaviour
     bool slow = false;
     bool camFollow = false;
     public MapBuilder mapB;
+    AudioSource audioS;
 
     void Start()
     {
+        audioS = GetComponent<AudioSource>();
         Application.targetFrameRate = 60;
         /*if(GlobalClass.nn == 1)
         {
@@ -90,9 +92,10 @@ public class GameManager : MonoBehaviour
             //NetworkTransport.host
             //if(GlobalClass.nn == 1)
             //{
-                //criar host/server
-            
+            //criar host/server
+
             //if(hostId != -1)
+            GlobalClass.floorSkin = GlobalClass.HostArena;
             if (GlobalClass.nn == 1)//HOST
             {
                 Debug.Log(GlobalClass.nn + "Global");
@@ -130,7 +133,7 @@ public class GameManager : MonoBehaviour
                         NetworkTransport.StopBroadcastDiscovery();
                         NetworkTransport.RemoveHost(0);
                     }
-                    NetworkTransport.StopBroadcastDiscovery();
+                    //NetworkTransport.StopBroadcastDiscovery();
                     NetworkTransport.StartBroadcastDiscovery(hostId, clientPort, broadcastKey,
                     broadcastVersion, broadcastSubVersion, bmsg, bmsg.Length, 500, out error);
                 }
@@ -356,23 +359,26 @@ public class GameManager : MonoBehaviour
                                 if(meuID == 1)
                                 {
                                     player1.GetComponent<Character>().InverterDirecao();
+                                    player1.GetComponent<Character>().PlayPonP();
                                 }
                                 break;
                             case "TomouDano":
                                 player1.GetComponent<Character>().GiroGhostOn();
                                 player1.GetComponent<Character>().instSangue(float.Parse(sepEnvio[1]), float.Parse(sepEnvio[2]), float.Parse(sepEnvio[3]));
+                                player1.GetComponent<Character>().PlaySom();
                                 break;
                             case "FoiceCol":
                                 if(meuID == 1)
                                 {
                                     //Debug.Log("Recebi FoiceCol");
-                                    //player1.GetComponent<Character>().InverterDirecao();
+                                    player1.GetComponent<Character>().InverterDirecao();
                                     player1.GetComponent<Character>().InverterDirFaisca(float.Parse(sepEnvio[1]), float.Parse(sepEnvio[2]), float.Parse(sepEnvio[3]));
                                 }
                                 break;
                             case "CausouDano":
                                 player2.GetComponent<Character>().GiroGhostOn();
                                 player1.GetComponent<Character>().instSangue(float.Parse(sepEnvio[1]), float.Parse(sepEnvio[2]), float.Parse(sepEnvio[3]));
+                                player1.GetComponent<Character>().PlaySom();
                                 break;
                             case "Terminou":
                                 terminarPartida(int.Parse(sepEnvio[1]));
@@ -545,6 +551,7 @@ public class GameManager : MonoBehaviour
 
     public void MainMenu()
     {
+        audioS.Play();
         /*if (meuID == 2)
         {
             NetworkTransport.RemoveHost(hostId);
@@ -557,9 +564,11 @@ public class GameManager : MonoBehaviour
     }
     public void RematchButton()
     {
+        audioS.Play();
         if(meuID == 2)
         {
             EnviarPlayer("Revanche|", 1, reliableChannel);
+            winner.text = "Esperando resposta";
         }
         else
         {
@@ -570,6 +579,29 @@ public class GameManager : MonoBehaviour
     }
     void resetGame()
     {
+        endPanel.SetActive(false);
+        time = 0f;
+        if (!player1.activeSelf)
+        {
+            player1.SetActive(true);
+        }
+        if (!player2.activeSelf)
+        {
+            player2.SetActive(true);
+        }
+        player1.GetComponent<Character>().resetar();
+        player2.GetComponent<Character>().resetar();
+
+        comecou = false;
+        jogando = false;
+        player1Ready = false;
+        player2Ready = false;
+
+        check1.enabled = false;
+        check2.enabled = false;
+        startPanel.SetActive(true);
+        
+
 
     }
     private void Enviar(string mensagem, int channelID)
@@ -695,10 +727,12 @@ public class GameManager : MonoBehaviour
             {
                 //meuId 1 ganhou
                 winner.text = "Venceu! Muito bem";
+                player2.SetActive(false);
             }
             else
             {
                 winner.text = "Perdeu! Que pena";
+                //player1.SetActive(false);
             }
         }
         else
@@ -707,10 +741,12 @@ public class GameManager : MonoBehaviour
             {
                 //meuId 1 ganhou
                 winner.text = "Perdeu! Que pena";
+                //player2.SetActive(false);
             }
             else
             {
                 winner.text = "Venceu! Muito bem";
+                player1.SetActive(false);
             }
         }
 

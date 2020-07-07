@@ -68,6 +68,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
     - Class: 104
@@ -161,6 +165,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
     - Class: 104
@@ -243,6 +251,10 @@ ScriptsOnlyBuild:
     - Class: 49
       Script: {instanceID: 0}
     - Class: 81
+      Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
@@ -493,7 +505,7 @@ ScriptsOnlyBuild:
     className: Mask
   - hash:
       serializedVersion: 2
-      Hash: 04506d2401806f640d20f549e0dda168
+      Hash: 616588c06e720c0d9b81a00926d41594
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FoiceCollider
@@ -781,7 +793,7 @@ ScriptsOnlyBuild:
     className: Server
   - hash:
       serializedVersion: 2
-      Hash: 83bfe7e3078c716ddb18b1870ef2ce0c
+      Hash: cf00f25c29eaffaffb949ca02f099b63
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Character
@@ -892,4 +904,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/MainMenu.unity
   - Assets/Scenes/Arena1.unity
   - Assets/Scenes/Areana1Rede.unity
-  playerPath: C:/Users/Marlon/Desktop/Multijogador/Build Girosblade/Girosblade.exe
+  playerPath: C:/Users/Marlon/Desktop/Multijogador/Build/Girosblade.exe

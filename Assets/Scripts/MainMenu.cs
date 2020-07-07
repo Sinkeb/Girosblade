@@ -18,6 +18,7 @@ public class MainMenu : MonoBehaviour
     public Sprite[] skins;
     public Image skinAtual;
     public int skinA = 0;
+    AudioSource audioS;
     //public void StartButton()
     //{
     //    SceneManager.LoadScene(1);
@@ -26,6 +27,14 @@ public class MainMenu : MonoBehaviour
     //{
     //    SceneManager.LoadScene(2);
     //}
+    private void Start()
+    {
+        audioS = GetComponent<AudioSource>();
+    }
+    void play()
+    {
+        audioS.Play();
+    }
     public void toggleChange(bool bbb)
     {
         if (broad.isOn)
@@ -39,30 +48,36 @@ public class MainMenu : MonoBehaviour
     }
     public void QuitButton()
     {
+        play();
         Application.Quit();
     }
     public void MultiPage()
     {
+        play();
         mainPage.SetActive(false);
         multiPage.SetActive(true);
     }
     public void MainPage()
     {
+        play();
         multiPage.SetActive(false);
         mainPage.SetActive(true);
     }
     public void ArenaPage()
     {
+        play();
         multiPage.SetActive(false);
         arenasPage.SetActive(true);
     }
     public void ArenaToMultiPage()
     {
+        play();
         arenasPage.SetActive(false);
         multiPage.SetActive(true);
     }
     public void CriarJogo()
     {
+        play();
         //GlobalClass.floorSkin = int.Parse(floorSkin.text);
         //GlobalClass.girospotSkin = int.Parse(girospotSkin.text);
         if (broad.isOn)
@@ -81,6 +96,7 @@ public class MainMenu : MonoBehaviour
     }
     public void EntrarJogo()
     {
+        play();
         //GlobalClass.floorSkin = int.Parse(floorSkin.text);
         //GlobalClass.girospotSkin = int.Parse(girospotSkin.text);
         if (broad.isOn)
@@ -98,6 +114,7 @@ public class MainMenu : MonoBehaviour
     }
     public void BotaoEntrar()
     {
+        play();
         GlobalClass.floorSkin = int.Parse(floorSkin.text);
         GlobalClass.girospotSkin = int.Parse(girospotSkin.text);
         ipInput.SetActive(true);
@@ -110,6 +127,7 @@ public class MainMenu : MonoBehaviour
 
     public void ChangeArena(bool side)
     {
+        play();
         if (side)
         {
             if (GlobalClass.HostArena < 2)
@@ -128,6 +146,7 @@ public class MainMenu : MonoBehaviour
     }
     public void ChangeSkin(bool side)
     {
+        play();
         if (side)
         {
             if(skinA < skins.Length - 1)

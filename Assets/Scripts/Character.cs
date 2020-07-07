@@ -61,6 +61,9 @@ public class Character : MonoBehaviour
     public GameObject faisca;
     public GameObject sangue;
 
+    Vector3 posInicial;
+    public AudioClip playerDano, playerShi, playerPl;
+    AudioSource audioS;
     //REDE
     /*int hostId;
     private int reliableChannel;
@@ -69,6 +72,7 @@ public class Character : MonoBehaviour
 
     void Start()
     {
+        audioS = GetComponent<AudioSource>();
         timeFull = Time.fixedDeltaTime;
         Debug.Log("delta: " + Time.fixedDeltaTime);
         Debug.Log("var: " + timeFull);
@@ -83,6 +87,7 @@ public class Character : MonoBehaviour
         corpoInitialPosition = transform.localPosition;
         corpoInitialRotation = transform.localRotation;
 
+        posInicial = transform.position;
         //matt = Instantiate(GetComponent<MeshRenderer>().material);
 
         /*if (nPlayer == 2)
@@ -105,6 +110,18 @@ public class Character : MonoBehaviour
         novosMatsGhost = new Material[2];
         novosMatsGhost[0] = matGhost;
         novosMatsGhost[1] = matGhost;*/
+    }
+    public void resetar()
+    {
+        transform.position = posInicial;
+        colliding = false;
+        rotating = false;
+        rotatingGirospot = false;
+        
+        repelimento = false;
+        ghost = false;
+        vidas = 3;
+        resetSpriteVidas();
     }
     public void setMaterials(int id, Skin skin)
     {
@@ -330,20 +347,7 @@ public class Character : MonoBehaviour
     }
     public void GiroGhostOn()
     {
-        //Debug.Log("GiroGhostOn");
-        //matt.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.25f);
-        GetComponent<MeshRenderer>().material = matGhost;
-        
-        //foiceee.GetComponent<MeshRenderer>().material = matGhost;
-        //foiceee.GetComponent<Renderer>().matei
-        foiceee.GetComponent<MeshRenderer>().materials = novosMatsGhost;
-
-        cabo.GetComponent<MeshRenderer>().material = matGhost;
-        //GetComponentInChildren<MeshRenderer>().material = matGhost;
-
-        ghost = true;
         vidas--;
-        spriteVidas[vidas].GetComponent<Image>().enabled = false;
         if (vidas <= 0)
         {
             morreu();
@@ -363,6 +367,31 @@ public class Character : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            //Debug.Log("GiroGhostOn");
+            //matt.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.25f);
+            GetComponent<MeshRenderer>().material = matGhost;
+
+            //foiceee.GetComponent<MeshRenderer>().material = matGhost;
+            //foiceee.GetComponent<Renderer>().matei
+            foiceee.GetComponent<MeshRenderer>().materials = novosMatsGhost;
+
+            cabo.GetComponent<MeshRenderer>().material = matGhost;
+            //GetComponentInChildren<MeshRenderer>().material = matGhost;
+
+            ghost = true;
+            spriteVidas[vidas].GetComponent<Image>().enabled = false;
+        }
+        
+        
+    }
+    void resetSpriteVidas()
+    {
+        for(int i = 0; i < spriteVidas.Length; i++)
+        {
+            spriteVidas[i].GetComponent<Image>().enabled = true;
+        }
     }
     public void GiroGhostOff()
     {
@@ -381,7 +410,8 @@ public class Character : MonoBehaviour
     void morreu()
     {
         //manager.Perdi(nPlayer);
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     public void InverterDirecao()
     {
@@ -544,10 +574,21 @@ public class Character : MonoBehaviour
         //InverterDirecao();
         Debug.Log("instantiate");
         Instantiate(faisca, new Vector3(x,y,z), Quaternion.identity);
+        foiceee.GetComponent<FoiceCollider>().playFoiceF();
     }
     public void instSangue(float x, float y, float z)
     {
         Instantiate(sangue, new Vector3(x, y, z), Quaternion.identity);
+    }
+    public void PlaySom()
+    {
+        audioS.clip = playerDano;
+        audioS.Play();
+    }
+    public void PlayPonP()
+    {
+        audioS.clip = playerPl;
+        audioS.Play();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -579,6 +620,8 @@ public class Character : MonoBehaviour
             //impulsionar ao contrario
             if(nPlayer == 1)
             {
+                audioS.clip = playerPl;
+                audioS.Play();
                 InverterDirecao();
                 manager.EnviarInverterDirecao();
             }
@@ -595,6 +638,8 @@ public class Character : MonoBehaviour
                 GiroGhostOn();
                 if (nPlayer == 1)
                 {
+                    audioS.clip = playerDano;
+                    audioS.Play();
                     //mandar pro outro que ele me acertou
                     manager.ClienteMeAcertou(other.ClosestPoint(gameObject.transform.position));
                     Instantiate(sangue, other.ClosestPoint(gameObject.transform.position), Quaternion.identity);
@@ -602,6 +647,8 @@ public class Character : MonoBehaviour
                 }
                 else
                 {
+                    audioS.clip = playerDano;
+                    audioS.Play();
                     //mandar pro outro que ele tomou dano
                     manager.ClienteTomouDano(other.ClosestPoint(gameObject.transform.position));
                     Instantiate(sangue, other.ClosestPoint(gameObject.transform.position), Quaternion.identity);
@@ -611,6 +658,8 @@ public class Character : MonoBehaviour
 
         if (other.gameObject.tag == "Shield" && !repelimento)
         {
+            audioS.clip = playerShi;
+            audioS.Play();
             repelimento = true;
             InverterDirecao();
 
